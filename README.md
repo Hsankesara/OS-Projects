@@ -1,7 +1,7 @@
 # OS-Projects
 This repo is the collection of my lab projects 
 ## Instructions
-** NEVER EVER COMMIT DIRECTLY IN MASTER BRANCH I REPEAT NEVER.**
+**NEVER EVER COMMIT DIRECTLY IN MASTER BRANCH I REPEAT NEVER.**
 ### How to start contributing?
 1. star and fork the repo.
 2. fork will clone this repo and create _YOUR-NAME/OS_Projects_
