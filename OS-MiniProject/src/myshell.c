@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include "cd.h"
 /*
 Unix Shell interface 
 */
@@ -25,34 +26,40 @@ struct base parse_string(char * str){
 		bool istag = false;	//for knowing whether or not tag exist
 		line.command = (char *) malloc(sizeof(char) * strlen(output));
 		strcpy(line.command, output);	//store command given by user
-		output= strtok (NULL, " ");		//just to jump from one substring to another
+		output = strtok (NULL, " ");		//just to jump from one substring to another
 		if(output == NULL)	// if next substring is null i.e no tags and no directory
 			return line;
 		char *temp = malloc(sizeof(char) * strlen(output));
-		strcmp(output, temp);
+		strcpy(temp, output);
 		// cheacking whether tag exist or not. 
-		if(temp[0] == "-") {
+		if(temp[0] == '-') {
 			istag = true;
 			line.tags = (char *)malloc(sizeof(char)*strlen(output));
 			strcpy(line.tags, output);
+			printf("%s\n", line.tags);
 			output= strtok (NULL, " ");
 		}
 		else{
 			line.tags = NULL;
 		}
 		// stores directory given by user
-		line.dir = (char *)malloc(sizeof(char)*strlen(output));
-		strcpy(line.dir, output);
-		output= strtok (NULL, " ");
+		if(output != NULL){
+			line.dir = (char *)malloc(sizeof(char)*strlen(output));
+			strcpy(line.dir, output);
+			output= strtok (NULL, " ");
+		}
+		else{
+			line.dir = NULL;
+		}
 	}
 	return line;
 }
 
 int main() {
 	char curr_dir[100];
-	getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
 	char arg[1000];
 	do{
+		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = parse_string(arg);
@@ -85,7 +92,15 @@ int main() {
 				break;
 			case 'c':
 				if(strcmp("cd",command_line.command) == 0){
-					printf("cd command\n");
+					if(command_line.tags == NULL){
+						cd(command_line.dir);
+					}
+					else if(strcmp(command_line.tags, "-e") == 0){
+						cd_e(command_line.dir);
+					}
+					else{
+						printf("%s does not exist please try -e\n",command_line.tags );
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
