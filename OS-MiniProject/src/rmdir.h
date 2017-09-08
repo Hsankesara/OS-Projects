@@ -5,7 +5,6 @@
 #include<errno.h>
 #include<sys/types.h>
 #include<dirent.h>
-#include "rmdira.h"
 
 
 int Isinteractive(char *dir,char *pathname);

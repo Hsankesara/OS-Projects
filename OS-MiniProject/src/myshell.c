@@ -63,6 +63,7 @@ int main() {
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = parse_string(arg);
+		printf("%s\n",command_line.command );
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
@@ -117,6 +118,18 @@ int main() {
 				break;
 			default :
 				printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+		}
+		if(command_line.command != NULL){
+			free(command_line.command);
+			command_line.command = NULL;
+		}
+		if(command_line.tags != NULL){
+			free(command_line.tags);
+			command_line.tags = NULL;
+		}
+		if(command_line.dir != NULL){
+			free(command_line.dir);
+			command_line.dir = NULL;
 		}
 	} while(strcmp(arg,"exit")!=0);
 
