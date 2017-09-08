@@ -7,6 +7,7 @@
 #include "ls.h"
 #include "mkdir.h"
 #include "rmdir.h"
+#include "pwd.h"
 /*
 Unix Shell interface 
 */
@@ -65,12 +66,12 @@ int main() {
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = parse_string(arg);
+		//printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
 			case 'l':
 				if(strcmp("ls",command_line.command) == 0){
-					printf("%s\n", command_line.tags);
 					if(command_line.tags == NULL){
 						ls();
 					}
@@ -134,7 +135,12 @@ int main() {
 				break;
 			case 'p':
 				if(strcmp("pwd",command_line.command) == 0){
-					printf("pwd command\n");
+					if(command_line.tags != NULL && command_line.dir != NULL){
+						pwd();
+					}
+					else{
+						printf("invalid format, please write \"pwd\" only\n");
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
