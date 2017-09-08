@@ -4,6 +4,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include "cd.h"
+#include "ls.h"
+#include "mkdir.h"
+#include "rmdir.h"
 /*
 Unix Shell interface 
 */
@@ -36,7 +39,6 @@ struct base parse_string(char * str){
 			istag = true;
 			line.tags = (char *)malloc(sizeof(char)*strlen(output));
 			strcpy(line.tags, output);
-			printf("%s\n", line.tags);
 			output= strtok (NULL, " ");
 		}
 		else{
@@ -68,7 +70,19 @@ int main() {
 			// And do appropriate job using that command
 			case 'l':
 				if(strcmp("ls",command_line.command) == 0){
-					printf("ls command\n");
+					printf("%s\n", command_line.tags);
+					if(command_line.tags == NULL){
+						ls();
+					}
+					else if(strcmp(command_line.tags,"-a") == 0){
+						lsa();
+					}
+					else if(strcmp(command_line.tags,"-l") == 0){
+						lsl();
+					}
+					else{
+						printf("%s does not exist please try -l or -a\n",command_line.tags );
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
@@ -76,7 +90,11 @@ int main() {
 				break;
 			case 'm':
 				if(strcmp("mkdir",command_line.command) == 0){
-					printf("mkdir command\n");
+					if(command_line.tags == NULL && command_line.dir != NULL)
+						make_dir(command_line.dir);
+					else{
+						printf("Invalid command try \"mkdir DIRECTORY_NAME\"\n");
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
@@ -84,7 +102,15 @@ int main() {
 				break;
 			case 'r':
 				if(strcmp("rmdir",command_line.command) == 0){
-					printf("rmdir command\n");
+					if(command_line.tags == NULL){
+						//Create rmdir method for non empty file
+					}
+					else if(strcmp(command_line.tags, "-i") == 0){
+						is_interactive(command_line.dir);
+					}
+					else if(strcmp(command_line.tags,"-r") == 0){
+						nonemptydirectoryrecursively(command_line.dir);
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
