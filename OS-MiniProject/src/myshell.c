@@ -24,39 +24,34 @@ struct base parse_string(char * str){
 	which contains parsed string.
 	It splits the string and divide into structure accordingly
 	*/
-	struct base line;
+	struct base line = {NULL, NULL, NULL};
 	char *output = strtok(str, " "); //splits the string
-	while(output != NULL){
-		bool istag = false;	//for knowing whether or not tag exist
-		line.command = (char *) malloc(sizeof(char) * strlen(output));
-		strcpy(line.command, output);	//store command given by user
-		output = strtok (NULL, " ");		//just to jump from one substring to another
-		if(output == NULL){	// if next substring is null i.e no tags and no directory
+	line.command = (char *) malloc(sizeof(char) * strlen(output));
+	strcpy(line.command, output);	//store command given by user
+	output = strtok (NULL, " ");		//just to jump from one substring to another
+	if(output == NULL){	// if next substring is null i.e no tags and no directory
+		return line;
+	}
+	char *temp = malloc(sizeof(char) * strlen(output));
+	strcpy(temp, output);
+	// cheacking whether tag exist or not. 
+	if(temp[0] == '-') {
+		line.tags = (char *)malloc(sizeof(char)*strlen(output));
+		strcpy(line.tags, output);
+		printf("%s\n", line.tags);
+		output= strtok (NULL, " ");
+	}
+	else{
 			line.tags = NULL;
-			line.dir = NULL;
-			return line;
-		}
-		char *temp = malloc(sizeof(char) * strlen(output));
-		strcpy(temp, output);
-		// cheacking whether tag exist or not. 
-		if(temp[0] == '-') {
-			istag = true;
-			line.tags = (char *)malloc(sizeof(char)*strlen(output));
-			strcpy(line.tags, output);
-			output= strtok (NULL, " ");
-		}
-		else{
-			line.tags = NULL;
-		}
-		// stores directory given by user
-		if(output != NULL){
-			line.dir = (char *)malloc(sizeof(char)*strlen(output));
-			strcpy(line.dir, output);
-			output= strtok (NULL, " ");
-		}
-		else{
-			line.dir = NULL;
-		}
+	}
+	// stores directory given by user
+	if(output != NULL){
+		line.dir = (char *)malloc(sizeof(char)*strlen(output));
+		strcpy(line.dir, output);
+		output= strtok (NULL, " ");
+	}
+	else{
+		line.dir = NULL;
 	}
 	return line;
 }
@@ -68,7 +63,8 @@ int main() {
 		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
-		struct base command_line = parse_string(arg);
+		struct base command_line = {NULL, NULL, NULL};
+		command_line = parse_string(arg);
 		printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
@@ -94,7 +90,7 @@ int main() {
 				break;
 			case 'm':
 				if(strcmp("mkdir",command_line.command) == 0){
-					if(command_line.tags == NULL && command_line.dir == NULL)
+					if(command_line.tags == NULL && command_line.dir != NULL)
 						make_dir(command_line.dir);
 					else{
 						printf("Invalid command try \"mkdir DIRECTORY_NAME\"\n");
@@ -121,8 +117,9 @@ int main() {
 				}
 				break;
 			case 'c':
+				printf("1\n");
 				if(strcmp("cd",command_line.command) == 0){
-					if(command_line.tags == NULL){
+					if(command_line.tags == NULL && command_line.dir != NULL){
 						if(strcmp(command_line.dir,"~") == 0){
 							cd_t();
 						}
@@ -158,6 +155,13 @@ int main() {
 			default :
 				printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
 		}
+		
+		free(command_line.command);
+		command_line.command = NULL;
+		free(command_line.tags);
+		command_line.tags = NULL;
+		free(command_line.dir);
+		command_line.dir = NULL;
 	} while(strcmp(arg,"exit")!=0);
 
 	return 0;
