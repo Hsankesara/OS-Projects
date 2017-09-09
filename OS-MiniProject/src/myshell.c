@@ -4,6 +4,10 @@
 #include <string.h>
 #include <stdbool.h>
 #include "cd.h"
+#include "ls.h"
+#include "mkdir.h"
+#include "rmdir.h"
+#include "pwd.h"
 /*
 Unix Shell interface 
 */
@@ -62,13 +66,28 @@ int main() {
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = parse_string(arg);
+<<<<<<< HEAD
 		printf("++++++++++++++++++%s\n",command_line.tags );
+=======
+		printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
+>>>>>>> b10b922ede570114fde7b70e36a972944a69af77
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
 			case 'l':
 				if(strcmp("ls",command_line.command) == 0){
-					printf("ls command\n");
+					if(command_line.tags == NULL){
+						ls();
+					}
+					else if(strcmp(command_line.tags,"-a") == 0){
+						lsa();
+					}
+					else if(strcmp(command_line.tags,"-l") == 0){
+						lsl();
+					}
+					else{
+						printf("%s does not exist please try -l or -a\n",command_line.tags );
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
@@ -76,7 +95,11 @@ int main() {
 				break;
 			case 'm':
 				if(strcmp("mkdir",command_line.command) == 0){
-					printf("mkdir command\n");
+					if(command_line.tags == NULL && command_line.dir == NULL)
+						make_dir(command_line.dir);
+					else{
+						printf("Invalid command try \"mkdir DIRECTORY_NAME\"\n");
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
@@ -84,7 +107,15 @@ int main() {
 				break;
 			case 'r':
 				if(strcmp("rmdir",command_line.command) == 0){
-					printf("rmdir command\n");
+					if(command_line.tags == NULL){
+						//Create rmdir method for non empty file
+					}
+					else if(strcmp(command_line.tags, "-i") == 0){
+						is_interactive(command_line.dir);
+					}
+					else if(strcmp(command_line.tags,"-r") == 0){
+						nonemptydirectoryrecursively(command_line.dir);
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
@@ -93,7 +124,12 @@ int main() {
 			case 'c':
 				if(strcmp("cd",command_line.command) == 0){
 					if(command_line.tags == NULL){
-						cd(command_line.dir);
+						if(strcmp(command_line.dir,"~") == 0){
+							cd_t();
+						}
+						else{
+							cd(command_line.dir);
+						}
 					}
 					else if(strcmp(command_line.tags, "-e") == 0){
 						cd_e(command_line.dir);
@@ -108,7 +144,12 @@ int main() {
 				break;
 			case 'p':
 				if(strcmp("pwd",command_line.command) == 0){
-					printf("pwd command\n");
+					if(command_line.tags == NULL && command_line.dir == NULL){
+						pwd();
+					}
+					else{
+						printf("invalid format, please write \"pwd\" only\n");
+					}
 				}
 				else{
 					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");

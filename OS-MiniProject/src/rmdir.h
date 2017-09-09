@@ -18,18 +18,18 @@ int isfile(char *filename);
         
    
  // function to be called in main
-int Isinteractive(char *dir,char *pathname){
+int is_interactive(char *dir){
    //creates a directory by using inbuilt opendir function
 	DIR *directory = opendir(dir);
     
     //if directory is not empty ,it confirms again to delete it or not 
      if(directory!=NULL){
-            printf("Are u sure u want to delete the non empty directory(y/n)?");
+        printf("Are u sure u want to delete the non empty directory(y/n)?");
        
-		int a;
-		scanf("%s",a);
+		char a;
+		scanf("%c",&a);
        
-        if(a == "y"){
+        if(a == 'y'  || a == 'Y'){
            
 			nonemptydirectoryrecursively(dir);
                 
@@ -42,10 +42,8 @@ int Isinteractive(char *dir,char *pathname){
        }
     }
        
-       //if empty directory then it deletes simply by using rmdir function
+    //if empty directory then it deletes simply by using rmdir function
     else{
-		char *pathname=argv[2];
-        char *dir=pathname;
         rmdir(dir);
     }
        
