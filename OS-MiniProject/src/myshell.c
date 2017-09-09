@@ -30,6 +30,7 @@ struct base parse_string(char * str){
 	strcpy(line.command, output);	//store command given by user
 	output = strtok (NULL, " ");		//just to jump from one substring to another
 	if(output == NULL){	// if next substring is null i.e no tags and no directory
+		//printf("%s\n",line.dir );
 		return line;
 	}
 	char *temp = malloc(sizeof(char) * strlen(output));
@@ -65,7 +66,7 @@ int main() {
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = {NULL, NULL, NULL};
 		command_line = parse_string(arg);
-		printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
+		printf("%s %s %s\n",command_line.command, command_line.tags, command_line.dir);
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
@@ -126,6 +127,9 @@ int main() {
 						else{
 							cd(command_line.dir);
 						}
+					}
+					else if(command_line.dir == NULL){
+						printf("please insert directory\n");
 					}
 					else if(strcmp(command_line.tags, "-e") == 0){
 						cd_e(command_line.dir);
