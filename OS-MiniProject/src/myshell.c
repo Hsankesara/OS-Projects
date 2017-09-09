@@ -30,8 +30,6 @@ struct base parse_string(char * str){
 	strcpy(line.command, output);	//store command given by user
 	output = strtok (NULL, " ");		//just to jump from one substring to another
 	if(output == NULL){	// if next substring is null i.e no tags and no directory
-		line.tags = NULL;
-		line.dir = NULL;
 		return line;
 	}
 	char *temp = malloc(sizeof(char) * strlen(output));
@@ -65,12 +63,9 @@ int main() {
 		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
-		struct base command_line = parse_string(arg);
-<<<<<<< HEAD
-		printf("++++++++++++++++++%s\n",command_line.tags );
-=======
+		struct base command_line = {NULL, NULL, NULL};
+		command_line = parse_string(arg);
 		printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
->>>>>>> b10b922ede570114fde7b70e36a972944a69af77
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
@@ -95,7 +90,7 @@ int main() {
 				break;
 			case 'm':
 				if(strcmp("mkdir",command_line.command) == 0){
-					if(command_line.tags == NULL && command_line.dir == NULL)
+					if(command_line.tags == NULL && command_line.dir != NULL)
 						make_dir(command_line.dir);
 					else{
 						printf("Invalid command try \"mkdir DIRECTORY_NAME\"\n");
@@ -122,8 +117,9 @@ int main() {
 				}
 				break;
 			case 'c':
+				printf("1\n");
 				if(strcmp("cd",command_line.command) == 0){
-					if(command_line.tags == NULL){
+					if(command_line.tags == NULL && command_line.dir != NULL){
 						if(strcmp(command_line.dir,"~") == 0){
 							cd_t();
 						}
