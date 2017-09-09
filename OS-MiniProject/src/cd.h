@@ -23,23 +23,15 @@ void cd(char cd_dir[]) {
 
 	 int n = chdir(cd_dir);
 
-	 if( n == 0 )
+	 if( n != 0 )
 
-	 	//If directory exists and is changed succesfully
+		//If directory doesn't exist
 
-		 printf("Current Directory: %s\n",cd_dir);
-
-	 else
-
-	 	//If directory doesn't exist
-
-		 printf("bash: cd: cn: No such file or directory\n");
+		printf("bash: cd: cn: No such file or directory\n");
 
  }
 
  //the current working directory cannot be determined successfully, exit with a non-zero status
-
-
 
 void cd_e(char cd_dir[]) {
 
@@ -49,13 +41,13 @@ void cd_e(char cd_dir[]) {
 
 	 if( n == 0 )
 
-	 	//If directory exists and is changed succesfully
+		//If directory exists and is changed succesfully
 
 		 printf("Current Directory: %s\n",cd_dir);
 
 	 else
 
-	 	////If directory doesn't exist
+		////If directory doesn't exist
 
 	 {
 
@@ -75,15 +67,13 @@ void cd_t() {
 
 	char *homedir = getenv("HOME");
 	//uid_t is an integer data type used to represent group IDs
-        uid_t uid = getuid();
-        struct passwd *pw = getpwuid(uid);
-        if (pw == NULL) {
-                printf("Failed\n");
-                exit(EXIT_FAILURE);
-        }
-        //Prints the home directory with username
-        printf("%s\n", pw->pw_dir);
-        //Set current directory as /home/<username>
-        cd(pw->pw_dir);
+		uid_t uid = getuid();
+		struct passwd *pw = getpwuid(uid);
+		if (pw == NULL) {
+				printf("Failed\n");
+				exit(EXIT_FAILURE);
+		}
+		//Set current directory as /home/<username>
+		cd(pw->pw_dir);
 
  }	

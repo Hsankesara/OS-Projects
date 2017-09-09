@@ -31,8 +31,11 @@ struct base parse_string(char * str){
 		line.command = (char *) malloc(sizeof(char) * strlen(output));
 		strcpy(line.command, output);	//store command given by user
 		output = strtok (NULL, " ");		//just to jump from one substring to another
-		if(output == NULL)	// if next substring is null i.e no tags and no directory
+		if(output == NULL){	// if next substring is null i.e no tags and no directory
+			line.tags = NULL;
+			line.dir = NULL;
 			return line;
+		}
 		char *temp = malloc(sizeof(char) * strlen(output));
 		strcpy(temp, output);
 		// cheacking whether tag exist or not. 
@@ -66,7 +69,7 @@ int main() {
 		printf("bash@%s$", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = parse_string(arg);
-		//printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
+		printf("%s %s %s\n",command_line.command, command_line.tags,command_line.dir);
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
@@ -91,7 +94,7 @@ int main() {
 				break;
 			case 'm':
 				if(strcmp("mkdir",command_line.command) == 0){
-					if(command_line.tags == NULL && command_line.dir != NULL)
+					if(command_line.tags == NULL && command_line.dir == NULL)
 						make_dir(command_line.dir);
 					else{
 						printf("Invalid command try \"mkdir DIRECTORY_NAME\"\n");
@@ -120,7 +123,12 @@ int main() {
 			case 'c':
 				if(strcmp("cd",command_line.command) == 0){
 					if(command_line.tags == NULL){
-						cd(command_line.dir);
+						if(strcmp(command_line.dir,"~") == 0){
+							cd_t();
+						}
+						else{
+							cd(command_line.dir);
+						}
 					}
 					else if(strcmp(command_line.tags, "-e") == 0){
 						cd_e(command_line.dir);
@@ -135,7 +143,7 @@ int main() {
 				break;
 			case 'p':
 				if(strcmp("pwd",command_line.command) == 0){
-					if(command_line.tags != NULL && command_line.dir != NULL){
+					if(command_line.tags == NULL && command_line.dir == NULL){
 						pwd();
 					}
 					else{
