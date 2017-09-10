@@ -62,11 +62,10 @@ int main() {
 	char arg[1000];
 	do{
 		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
-		printf("bash@%s$", curr_dir);
+		printf("bash@%s$ ", curr_dir);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = {NULL, NULL, NULL};
 		command_line = parse_string(arg);
-		printf("%s %s %s\n",command_line.command, command_line.tags, command_line.dir);
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
@@ -159,7 +158,9 @@ int main() {
 			default :
 				printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
 		}
-		
+		// Free all the struct pointer
+		// And then declare them NULL
+		// Just to be on a safe side
 		free(command_line.command);
 		command_line.command = NULL;
 		free(command_line.tags);
