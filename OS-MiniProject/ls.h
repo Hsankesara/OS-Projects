@@ -7,280 +7,297 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include<string.h>
-#include <pwd.h> 
-#include <grp.h> 
+#include <pwd.h>
+#include <grp.h>
 #include <time.h>
 
- // Define the color codes as macros
- #define RESET "\e[m"
- #define GREEN "\e[32m"
- #define BLUE "\e[36m"
-
-  int i,j,n,num_files,count;
-  char *curr=NULL;
-  DIR *dir=NULL;
-  struct dirent *dirptr=NULL;
-  long *ptr=NULL;
+#define RESET_COLOR "\e[m"
+#define MAKE_GREEN "\e[32m"
+#define MAKE_BLUE "\e[36m"
+// Define the color codes as macros
 
 
-void sort()                      //function that sorts the stored names
-{
-int count;
-  for(count = 0; count< num_files-1;count++)
-   {
-       for(j=count+1; j< (num_files);j++)
-       {
-           char *c = (char*)ptr[count];
-           char *d = (char*)ptr[j];
-
-           // Check that the two characters should be from same set
-           if( ((*c >= 'a') && (*d >= 'a')) || ((*c <='Z') && (*d <='Z')) )
-           {
-               int i = 0;
-               // If initial characters are same, continue comparing
-               // the characters until a difference is found
-               if(*c == *d)
-               {
-                   while(*(c+i)==*(d+i))
-                   {
-                       i++;
-                   }
-               }
-               // Check if the earlier stored value is alphabetically
-               // higher than the next value
-               if(*(c+i) > *(d+i))
-               {
-                   // If yes, then swap the values
-                   long temp = 0;
-                   temp = ptr[count];
-                   ptr[count] = ptr[j];
-                   ptr[j] = temp;
-               }
-
-           }
-           else
-           {
-               // if the two beginning characters are not from
-               // the same ASCII set then make them same and then
-               // compare.
-               int off_1=0, off_2=0;
-               if(*c <= 'Z')
-               {
-                   off_1 = 32;
-               }
-               if(*d <= 'Z')
-               {
-                   off_2 = 32;
-               }
-
-               int i = 0;
-               // After the character set are made same, check if the
-               // beginning characters are same. If yes, then continue
-               // searching until we find some difference.
-               if(*c+ off_1 == *d + off_2)
-               {
-                   while(*(c+off_1+i)==*(d+off_2+i))
-                   {
-                       i++;
-                   }
-               }
-               // After difference is found, check if a swap is required.
-               if((*c + off_1+i) > (*d + off_2+i))
-               {
-                   // If yes, go ahead and do the swap
-                   long temp = 0;
-                   temp = ptr[count];
-                   ptr[count] = ptr[j];
-                   ptr[j] = temp;
-               }
-           }
-       }
-    }
-}
-
-void display()
-{
-for(count = 0; count< num_files; count++)
-   {
-       // Check if the file/folder is executable.
-       if(!access((const char*)ptr[count],X_OK))
-           {
-               int fd = -1;
-               struct stat st;
-
-               fd = open((char*)ptr[count], O_RDONLY, 0);
-               if(-1 == fd)
-               {
-                   printf("\n Opening file/Directory failed\n");
-                   free(ptr);
-                  // return -1;
-               }
-
-               fstat(fd, &st);
-               if(S_ISDIR(st.st_mode))
-               {
-                   // If folder, print in blue
-                   printf(BLUE"%s     \n"RESET,(char*)ptr[count]);
-               }
-               else
-               {
-                   // If executable file, print in green
-                   printf(GREEN"%s     \n"RESET,(char*)ptr[count]);
-               }
-               close(fd);
-           }
-           else
-           {
-               // If normal file, print by the default way
-               printf("%s     \n",(char*)ptr[count]);
-           }
-   }
-   printf("\n");
-}
-   
+  
 int ls()
 {
-  
-  curr=getenv("PWD");                             //get the current working directory
-  if(NULL==curr)
-  {
-    printf("Could not get current directory!");
-    return -1;
-  }
-
-  dir=opendir((const char*)curr);
-  while(NULL!=(dirptr=readdir(dir)))
-  {
-    if(dirptr->d_name[0]!='.')
-    num_files++;
-  }
-  closedir(dir);
-
-  dir=NULL;
-  dirptr=NULL;
-
-  if(!num_files)   //if number of files is zero,return
-  {
-   return 0;
-  }
-  else        //else allocate required memory
-  {
-    ptr=malloc(num_files*8);
-    if(NULL==ptr)
+    
+    char *curr_dir = NULL;
+    DIR *dp = NULL;
+    struct dirent *dptr = NULL;
+    unsigned int count = 0;
+    long *ptr = NULL;
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+	
+     curr_dir=cwd;
+     printf(">>>%s\n", curr_dir);
+    // Fetch the Current working directory
+    
+    if(NULL == curr_dir)
     {
-      printf("Memory allocation failed!");
+        printf("\n ERROR : Could not get the working directory\n");
+        return -1;
+    }
+
+    // Variable to hold number of files inside the directory
+    int num_files = 0;
+  
+    dp = opendir((const char*)curr_dir);
+    // Start reading the directory contents
+    while(NULL != (dptr = readdir(dp)))
+    {
+        // Do not count the files begining with '.'
+        if(dptr->d_name[0] != '.')
+        num_files++;
+    }
+  
+    // close the directory.
+    closedir(dp);
+
+    // Restore the values 
+    dp = NULL;
+    dptr = NULL;
+
+    // Check that we should have at least one file/folder
+    // inside the current working directory
+    if(!num_files)
+    {
+        return 0;
     }
     else
     {
-        memset(ptr,0,num_files*8);
+        // Allocate memory to hold the addresses of the
+        // names of contents in current working directory
+        ptr = malloc(num_files*8);
+        if(NULL == ptr)
+        {
+            printf("\n Memory allocation failed\n");
+            return -1;
+        }
+        else
+        {
+            // Initialize the memory by zeros
+            memset(ptr,0,num_files*8);
+        }
     }
-    dir=opendir((const char*)curr);
-    if(NULL==dir)
+   
+
+    // Open the directory again
+    dp = opendir((const char*)curr_dir);
+    if(NULL == dp)
     {
-        printf("Could not open the working directory");
+        printf("\n ERROR : Could not open the working directory\n");
         free(ptr);
-       // return -1;
+        return -1;
     }
-    i=0;
-    for(j=0;NULL!=(dirptr=readdir(dir));j++)
+
+    // Start iterating the directory and read all its contents
+    // inside an array allocated above.
+    unsigned int j = 0;
+    for(count = 0; NULL != (dptr = readdir(dp)); count++)
     {
-      if(dirptr->d_name[0]!='.')
-      {
-        ptr[i]=(long)dirptr->d_name;
-        i++;
-      }
+        if(dptr->d_name[0] != '.')
+        {
+           ptr[j] = (long)dptr->d_name;
+           j++;
+        }
     }
-  }
-  sort();
-   // Now the names are sorted alphabetically
-   // Start displaying on console.
-   display();
-
-   //Free the allocated memory
-   free(ptr);
- return 0;
-}
 
 
-//ls-a function
-//return type void
-int lsa()
-{  ptr=NULL;
-   int n=0;
-   curr=getenv("PWD");
-  if(NULL==curr)
-  {
-    printf("Could not get current directory!");
-    //return -1;
-  }
-
-  dir=opendir((const char*)curr);
-  if(NULL==dir)
+    
+    
+    for(count = 0; count< num_files; count++)
     {
-        printf("Could not open the working directory");
-       return -1;
-    }
- 
-    for(j=0;NULL!=(dirptr=readdir(dir));j++)
-    {
-      
-      {
-        n++;
-       
-      }
-  
-}
-closedir(dir);
+        // Check if the file/folder is executable.
+        if(!access((const char*)ptr[count],X_OK))
+            {
+                int fd = -1;
+                struct stat st;
 
-dir=NULL;
-dirptr=NULL;
-if(!n)
-return 0;
-else
-{
-  ptr=malloc(n*8);
- memset(ptr,0,n*8);
-}
-dir=opendir((const char*)curr);
-for(j=0;NULL!=(dirptr=readdir(dir));j++)
-{
- ptr[j]=(long)dirptr->d_name;
- 
-}
-sort();
-display();
+                fd = open((char*)ptr[count], O_RDONLY, 0);
+                if(-1 == fd)
+                {
+                    printf("\n Opening file/Directory failed\n");
+                    free(ptr);
+                    return -1;
+                }
+
+                fstat(fd, &st);
+                if(S_ISDIR(st.st_mode))
+                {
+                    // If folder, print in blue
+                    printf(MAKE_BLUE"%s     "RESET_COLOR,(char*)ptr[count]);
+                }
+                else
+                {
+                    // If executable file, print in green
+                    printf(MAKE_GREEN"%s     "RESET_COLOR,(char*)ptr[count]);
+                }
+                close(fd);
            }
+            else
+            {
+                // If normal file, print by the default way(black color)
+                printf("%s     ",(char*)ptr[count]);
+            }
+    }
+    printf("\n");
 
+    //Free the allocated memory
+    free(ptr);
+    return 0;
 
+}
 
+int lsa()
+{
+    char *curr_dir = NULL;
+    DIR *dp = NULL;
+    struct dirent *dptr = NULL;
+    unsigned int count = 0;
+    long *ptr = NULL;
+    char cwd1[1024];
+    getcwd(cwd1, sizeof(cwd1));
+	
+     curr_dir=cwd1;
+     printf(">>>%s\n", curr_dir);
+    // Fetch the Current working directory
+    
+    if(NULL == curr_dir)
+    {
+        printf("\n ERROR : Could not get the working directory\n");
+        return -1;
+    }
 
+    // Variable to hold number of files inside the directory
+    int num_files = 0;
+    dp = opendir((const char*)curr_dir);
+    // Start reading the directory contents
+    while(NULL != (dptr = readdir(dp)))
+    {
+        num_files++;
+    }
+  
+    // close the directory.
+    closedir(dp);
 
-//ls-l function
-//return type void
-int lsl() 
+    // Restore the values 
+    dp = NULL;
+    dptr = NULL;
+
+    // Check that we should have at least one file/folder
+    // inside the current working directory
+    if(!num_files)
+    {
+        return 0;
+    }
+    else
+    {
+        // Allocate memory to hold the addresses of the
+        // names of contents in current working directory
+        ptr = malloc(num_files*8);
+        if(NULL == ptr)
+        {
+            printf("\n Memory allocation failed\n");
+            return -1;
+        }
+        else
+        {
+            // Initialize the memory by zeros
+            memset(ptr,0,num_files*8);
+        }
+    }
+   
+    // Open the directory again
+    dp = opendir((const char*)curr_dir);
+    if(NULL == dp)
+    {
+        printf("\n ERROR : Could not open the working directory\n");
+        free(ptr);
+        return -1;
+    }
+
+    // Start iterating the directory and read all its contents
+    // inside an array allocated above.
+    unsigned int j = 0;
+    for(count = 0; NULL != (dptr = readdir(dp)); count++)
+    {
+        
+        {
+           ptr[j] = (long)dptr->d_name;
+           j++;
+        }
+    }
+
+    for(count = 0; count< num_files; count++)
+    {
+        // Check if the file/folder is executable.
+        if(!access((const char*)ptr[count],X_OK))
+            {
+                int fd = -1;
+                struct stat st;
+
+                fd = open((char*)ptr[count], O_RDONLY, 0);
+                if(-1 == fd)
+                {
+                    printf("\n Opening file/Directory failed\n");
+                    free(ptr);
+                    return -1;
+                }
+
+                fstat(fd, &st);
+                if(S_ISDIR(st.st_mode))
+                {
+                    // If folder, print in blue
+                    printf(MAKE_BLUE"%s     "RESET_COLOR,(char*)ptr[count]);
+                }
+                else
+                {
+                    // If executable file, print in green
+                    printf(MAKE_GREEN"%s     "RESET_COLOR,(char*)ptr[count]);
+                }
+                close(fd);
+           }
+            else
+            {
+                // If normal file, print by the default way(black color)
+                printf("%s     ",(char*)ptr[count]);
+            }
+    }
+    printf("\n");
+
+    //Free the allocated memory
+    free(ptr);
+    return 0;
+
+}
+
+int lsl()
 { 
    char *curr_dir = NULL; 
    DIR *dp = NULL; 
    struct dirent *dptr = NULL; 
    unsigned int count = 0; 
    long *ptr = NULL; 
-   struct winsize w; 
- 
-   curr_dir = getenv("PWD"); 
+   char cwd2[1024];
+
+   getcwd(cwd2, sizeof(cwd2));
+   curr_dir=cwd2;
+   printf(">>>%s\n", curr_dir);
+   curr_dir=cwd2;
    if(NULL == curr_dir) 
    { 
        printf("\n ERROR : Could not get the working directory\n"); 
-     //  return -1; 
+       return -1; 
    } 
  
    // Variable to hold number of files inside the directory 
    int num_files = 0; 
-   // opne the directory 
    dp = opendir((const char*)curr_dir);   
    // Start reading the directory contents 
    while(NULL != (dptr = readdir(dp)))  
    { 
-       // Do not count the files beginning with '.' 
+       // Do not count the files beginning with '.'
        if(dptr->d_name[0] != '.') 
        num_files++; 
    } 
@@ -298,7 +315,7 @@ int lsl()
    // inside the current working directory 
    if(!num_files) 
    { 
-    //   return 0; 
+       return 0; 
    } 
    else 
    { 
@@ -308,7 +325,7 @@ int lsl()
        if(NULL == ptr) 
        { 
            printf("\n Memory allocation failed\n"); 
-         //  return -1; 
+           return -1; 
        } 
        else 
        { 
@@ -323,7 +340,7 @@ int lsl()
    { 
        printf("\n ERROR : Could not open the working directory\n"); 
        free(ptr); 
-     //  return -1; 
+       return -1; 
    } 
   
    // Start iterating the directory and read all its contents 
@@ -338,11 +355,6 @@ int lsl()
        } 
    } 
  
-   // Start sorting the names alphabetically 
-   // Using bubble sorting here 
-   sort();
-   // Now the names are sorted alphabetically 
-   // Start displaying on console. 
    for(count = 0; count< num_files; count++) 
    { 
        int fd = -1; 
@@ -353,7 +365,7 @@ int lsl()
        { 
            printf("\n Opening file/Directory failed\n"); 
            free(ptr); 
-      //     return -1; 
+           return -1; 
        } 
  
       // Call fstat to get the stat info about the file 
@@ -363,7 +375,7 @@ int lsl()
           printf("\n Fstat() failed\n"); 
           close(fd); 
           free(ptr); 
-       //   return -1; 
+          return -1; 
       } 
  
       // Check if a directory 
@@ -503,12 +515,12 @@ int lsl()
           if(S_ISDIR(st.st_mode)) 
           { 
               // If folder, print in blue 
-              printf(BLUE"%s\n"RESET,(char*)ptr[count]); 
+              printf(MAKE_BLUE"%s\n"RESET_COLOR,(char*)ptr[count]); 
           } 
           else 
           {        
               // If executable file, print in green                            
-              printf(GREEN"%s\n"RESET,(char*)ptr[count]); 
+              printf(MAKE_GREEN"%s\n"RESET_COLOR,(char*)ptr[count]); 
           } 
       } 
       else 
@@ -521,15 +533,7 @@ int lsl()
  
    //Free the allocated memory 
    free(ptr); 
-return 0;
-    
+   return 0; 
 }
-
-
-
-
-
-
-
 
 
