@@ -39,27 +39,12 @@ void cd_e(char cd_dir[]) {
 
 	 int n = chdir(cd_dir);
 
-	 if( n == 0 )
-
-		//If directory exists and is changed succesfully
-
-		 printf("Current Directory: %s\n",cd_dir);
-
-	 else
-
-		////If directory doesn't exist
-
-	 {
+	 if( n != 0 ){
 
 		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
-
 		exit(1); // exits with a non zero status
-
 	 }
-
  }
-
- 
 
 void cd_t() {
 

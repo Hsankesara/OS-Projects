@@ -45,7 +45,6 @@ struct base parse_string(char * str){
 	if(temp[0] == '-') {
 		line.tags = (char *)malloc(sizeof(char)*strlen(output));
 		strcpy(line.tags, output);
-		printf("%s\n", line.tags);
 		output= strtok (NULL, " ");
 	}
 	else{
@@ -80,13 +79,13 @@ int main() {
 			case 'l':
 				if(strcmp("ls",command_line.command) == 0){
 					if(command_line.tags == NULL){
-						ls();
+						ls(command_line.dir);
 					}
 					else if(strcmp(command_line.tags,"-a") == 0){
-						lsa();
+						lsa(command_line.dir);
 					}
 					else if(strcmp(command_line.tags,"-l") == 0){
-						lsl();
+						lsl(command_line.dir);
 					}
 					else{
 						printf(RED "%s does not exist please try -l or -a\n",command_line.tags);
