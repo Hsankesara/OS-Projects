@@ -19,7 +19,7 @@
 
 
   
-int ls()
+int ls(char *path)
 {
     
     char *curr_dir = NULL;
@@ -27,9 +27,12 @@ int ls()
     struct dirent *dptr = NULL;
     unsigned int count = 0;
     long *ptr = NULL;
+    
     char cwd[1024];
-    getcwd(cwd, sizeof(cwd));
-	
+    getcwd(cwd, sizeof(cwd)); 
+    if(NULL!=path)
+    curr_dir=path;
+    else
      curr_dir=cwd;
     if(NULL == curr_dir)
     {
@@ -147,7 +150,7 @@ int ls()
 
 }
 
-int lsa()
+int lsa(char *path)
 {
     char *curr_dir = NULL;
     DIR *dp = NULL;
@@ -156,8 +159,10 @@ int lsa()
     long *ptr = NULL;
     char cwd1[1024];
     getcwd(cwd1, sizeof(cwd1));
-	
-     curr_dir=cwd1;
+    if(path!=NULL)
+     curr_dir=path;
+    else
+    curr_dir=cwd1;
     if(NULL == curr_dir)
     {
         printf(RED"\n ERROR : Could not get the working directory\n"RESET);
@@ -267,7 +272,7 @@ int lsa()
 
 }
 
-int lsl()
+int lsl(char *path)
 { 
    char *curr_dir = NULL; 
    DIR *dp = NULL; 
@@ -277,6 +282,9 @@ int lsl()
    char cwd2[1024];
 
    getcwd(cwd2, sizeof(cwd2));
+   if(path!=NULL)
+   curr_dir=path;
+   else
    curr_dir=cwd2;
    if(NULL == curr_dir) 
    { 
