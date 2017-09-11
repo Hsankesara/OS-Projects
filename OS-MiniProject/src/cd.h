@@ -1,4 +1,3 @@
-
 //Implementing cd Command in C
 
 #include<unistd.h>
@@ -30,10 +29,10 @@ void cd(char cd_dir[]) {
 
 		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 
+
  }
 
  //the current working directory cannot be determined successfully, exit with a non-zero status
-
 void cd_e(char cd_dir[]) {
 
  
@@ -68,13 +67,19 @@ void cd_t() {
 
 	char *homedir = getenv("HOME");
 	//uid_t is an integer data type used to represent group IDs
-		uid_t uid = getuid();
-		struct passwd *pw = getpwuid(uid);
-		if (pw == NULL) {
-				printf(RED"Failed\n"RESET);
-				exit(EXIT_FAILURE);
-		}
-		//Set current directory as /home/<username>
-		cd(pw->pw_dir);
+	//getuid() returns the real user ID of the calling process
+        uid_t uid = getuid();
+    //The getpwuid() function shall search the user database for an entry with a matching uid
+        struct passwd *pw = getpwuid(uid);
+        if (pw == NULL) {
+                printf("Failed\n");
+                exit(EXIT_FAILURE);
+        }
+        //Prints the home directory with username
+        printf("%s\n", pw->pw_dir);
+        //Set current directory as /home/<username>
+        cd(pw->pw_dir);
 
  }	
+
+ 
