@@ -12,7 +12,8 @@
 
 #include<pwd.h>
 
-
+#define RESET	"\x1b[0m"
+#define RED		"\x1b[31m"
 
 void cd(char cd_dir[]) {
 
@@ -22,24 +23,16 @@ void cd(char cd_dir[]) {
 
 	 int n = chdir(cd_dir);
 
-	 if( n == 0 )
+	 if( n != 0 )
 
-	 	//If directory exists and is changed succesfully
+		//If directory doesn't exist
 
-		 printf("Current Directory: %s\n",cd_dir);
+		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 
-	 else
-
-	 	//If directory doesn't exist
-
-		 printf("bash: cd: cn: No such file or directory\n");
 
  }
 
  //the current working directory cannot be determined successfully, exit with a non-zero status
-
-
-
 void cd_e(char cd_dir[]) {
 
  
@@ -48,17 +41,17 @@ void cd_e(char cd_dir[]) {
 
 	 if( n == 0 )
 
-	 	//If directory exists and is changed succesfully
+		//If directory exists and is changed succesfully
 
 		 printf("Current Directory: %s\n",cd_dir);
 
 	 else
 
-	 	////If directory doesn't exist
+		////If directory doesn't exist
 
 	 {
 
-		printf("bash: cd: cn: No such file or directory\n");
+		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 
 		exit(1); // exits with a non zero status
 
