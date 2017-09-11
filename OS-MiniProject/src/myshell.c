@@ -114,7 +114,7 @@ int main() {
 						//Create rmdir method for non empty file
 					}
 					else if(strcmp(command_line.tags, "-i") == 0){
-						is_interactive(command_line.dir);
+						Isinteractive(command_line.dir);
 					}
 					else if(strcmp(command_line.tags,"-r") == 0){
 						nonemptydirectoryrecursively(command_line.dir);
