@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
+#define RESET   "\x1b[0m"
+#define RED     "\x1b[31m"
 void make_dir(char *path){
     int ret;
     char cwd[1024];
@@ -18,7 +19,7 @@ void make_dir(char *path){
     //S_IWOTH=Write permission,others.
     //S_IXOTH=Execute/Search permission,others.
     if (mkdir(path,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)==-1){
-        printf("Cannot create directory, path is incorrect\n");
+        printf(RED"Cannot create directory, path is incorrect\n"RESET);
     }
     //If here any type of error will result to ret = -1; Error are Checking the Path ;If the There is any Folder made at the           Same Location then it will return -1.
     else {

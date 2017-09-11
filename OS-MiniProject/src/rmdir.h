@@ -5,7 +5,9 @@
 #include<errno.h>
 #include<sys/types.h>
 #include<dirent.h>
-
+#define RESET	"\x1b[0m"
+#define RED		"\x1b[31m"
+#define BLUE	"\x1b[34m"
 
 int Isinteractive(char *dir,char *pathname);
 void nonemptydirectoryrecursively(char *dir);
@@ -15,8 +17,6 @@ int isfile(char *filename);
 //argc-counts the no of lines till the input is taken
 //argv-stores the input in form of an array
 
-        
-   
  // function to be called in main
 int is_interactive(char *dir){
    //creates a directory by using inbuilt opendir function
@@ -24,7 +24,7 @@ int is_interactive(char *dir){
     
     //if directory is not empty ,it confirms again to delete it or not 
      if(directory!=NULL){
-        printf("Are u sure u want to delete the non empty directory(y/n)?");
+        printf(BLUE"Are u sure u want to delete the non empty directory(y/n)?"RESET);
        
 		char a;
 		scanf("%c",&a);
@@ -61,8 +61,12 @@ void nonemptydirectoryrecursively(char *dir){
 	//using the scandir function
 	count = scandir(dir, &entry, NULL, alphasort); 
 	//changes the path of directory after every recursive call         
-	chdir(path);
-	// error handling required
+	int n = chdir(path);
+	if( n != 0 ){
+		//If directory doesn't exist
+		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
+		return;
+ 	}
 	for(int i=0;i<count;i++){
 	   //checks whether the given entry is a file or a directory
 		if(isfile(entry[i]->d_name) == 0){

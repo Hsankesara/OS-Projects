@@ -11,6 +11,12 @@
 /*
 Unix Shell interface 
 */
+#define BLUE	"\x1b[34m"
+#define GREEN	"\x1b[32m"
+#define CYAN	"\x1b[36m"
+#define RESET	"\x1b[0m"
+#define RED		"\x1b[31m"
+#define MAGENTA	"\x1b[35m"
 struct base	
 {
 	//for taking string input from user and divide them into those character arrays.
@@ -62,7 +68,9 @@ int main() {
 	char arg[1000];
 	do{
 		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
-		printf("bash@%s$ ", curr_dir);
+		printf(GREEN"bash:", curr_dir);
+		printf(BLUE"%s$ ", curr_dir);
+		printf(RESET);
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = {NULL, NULL, NULL};
 		command_line = parse_string(arg);
@@ -81,11 +89,12 @@ int main() {
 						lsl();
 					}
 					else{
-						printf("%s does not exist please try -l or -a\n",command_line.tags );
+						printf(RED "%s does not exist please try -l or -a\n",command_line.tags);
+						printf(RESET);
 					}
 				}
 				else{
-					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+					printf(RED "Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n" RESET);
 				}
 				break;
 			case 'm':
@@ -93,11 +102,11 @@ int main() {
 					if(command_line.tags == NULL && command_line.dir != NULL)
 						make_dir(command_line.dir);
 					else{
-						printf("Invalid command try \"mkdir DIRECTORY_NAME\"\n");
+						printf(RED "Invalid command try \"mkdir DIRECTORY_NAME\"\n" RESET);
 					}
 				}
 				else{
-					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
 				break;
 			case 'r':
@@ -113,11 +122,10 @@ int main() {
 					}
 				}
 				else{
-					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
 				break;
 			case 'c':
-				printf("1\n");
 				if(strcmp("cd",command_line.command) == 0){
 					if(command_line.tags == NULL && command_line.dir != NULL){
 						if(strcmp(command_line.dir,"~") == 0){
@@ -128,17 +136,18 @@ int main() {
 						}
 					}
 					else if(command_line.dir == NULL){
-						printf("please insert directory\n");
+						printf(RED "please insert directory\n" RESET);
 					}
 					else if(strcmp(command_line.tags, "-e") == 0){
 						cd_e(command_line.dir);
 					}
 					else{
-						printf("%s does not exist please try -e\n",command_line.tags );
+						printf(RED"%s does not exist please try -e\n",command_line.tags );
+						printf(RESET);
 					}
 				}
 				else{
-					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
 				break;
 			case 'p':
@@ -147,16 +156,16 @@ int main() {
 						pwd();
 					}
 					else{
-						printf("invalid format, please write \"pwd\" only\n");
+						printf(RED"invalid format, please write \"pwd\" only\n"RESET);
 					}
 				}
 				else{
-					printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
 			case 'e':
 				break;
 			default :
-				printf("Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n");
+				printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 		}
 		// Free all the struct pointer
 		// And then declare them NULL

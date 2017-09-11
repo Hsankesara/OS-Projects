@@ -13,7 +13,8 @@
 
 #include<pwd.h>
 
-
+#define RESET	"\x1b[0m"
+#define RED		"\x1b[31m"
 
 void cd(char cd_dir[]) {
 
@@ -27,7 +28,7 @@ void cd(char cd_dir[]) {
 
 		//If directory doesn't exist
 
-		printf("bash: cd: cn: No such file or directory\n");
+		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 
  }
 
@@ -51,7 +52,7 @@ void cd_e(char cd_dir[]) {
 
 	 {
 
-		printf("bash: cd: cn: No such file or directory\n");
+		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 
 		exit(1); // exits with a non zero status
 
@@ -70,7 +71,7 @@ void cd_t() {
 		uid_t uid = getuid();
 		struct passwd *pw = getpwuid(uid);
 		if (pw == NULL) {
-				printf("Failed\n");
+				printf(RED"Failed\n"RESET);
 				exit(EXIT_FAILURE);
 		}
 		//Set current directory as /home/<username>

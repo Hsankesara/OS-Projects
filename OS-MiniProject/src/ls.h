@@ -10,7 +10,8 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
-
+#define RESET "\x1b[0m"
+#define RED   "\x1b[31m"
 #define RESET_COLOR "\e[m"
 #define MAKE_GREEN "\e[32m"
 #define MAKE_BLUE "\e[36m"
@@ -32,7 +33,7 @@ int ls()
      curr_dir=cwd;
     if(NULL == curr_dir)
     {
-        printf("\n ERROR : Could not get the working directory\n");
+        printf(RED"\n ERROR : Could not get the working directory\n"RESET);
         return -1;
     }
 
@@ -68,7 +69,7 @@ int ls()
         ptr = malloc(num_files*8);
         if(NULL == ptr)
         {
-            printf("\n Memory allocation failed\n");
+            printf(RED"\n Memory allocation failed\n"RESET);
             return -1;
         }
         else
@@ -83,7 +84,7 @@ int ls()
     dp = opendir((const char*)curr_dir);
     if(NULL == dp)
     {
-        printf("\n ERROR : Could not open the working directory\n");
+        printf(RED"\n ERROR : Could not open the working directory\n"RESET);
         free(ptr);
         return -1;
     }
@@ -114,7 +115,7 @@ int ls()
                 fd = open((char*)ptr[count], O_RDONLY, 0);
                 if(-1 == fd)
                 {
-                    printf("\n Opening file/Directory failed\n");
+                    printf(RED"\n Opening file/Directory failed\n"RESET);
                     free(ptr);
                     return -1;
                 }
@@ -159,7 +160,7 @@ int lsa()
      curr_dir=cwd1;
     if(NULL == curr_dir)
     {
-        printf("\n ERROR : Could not get the working directory\n");
+        printf(RED"\n ERROR : Could not get the working directory\n"RESET);
         return -1;
     }
 
@@ -192,7 +193,7 @@ int lsa()
         ptr = malloc(num_files*8);
         if(NULL == ptr)
         {
-            printf("\n Memory allocation failed\n");
+            printf(RED"\n Memory allocation failed\n"RESET);
             return -1;
         }
         else
@@ -206,7 +207,7 @@ int lsa()
     dp = opendir((const char*)curr_dir);
     if(NULL == dp)
     {
-        printf("\n ERROR : Could not open the working directory\n");
+        printf(RED"\n ERROR : Could not open the working directory\n"RESET);
         free(ptr);
         return -1;
     }
@@ -234,7 +235,7 @@ int lsa()
                 fd = open((char*)ptr[count], O_RDONLY, 0);
                 if(-1 == fd)
                 {
-                    printf("\n Opening file/Directory failed\n");
+                    printf(RED"\n Opening file/Directory failed\n"RESET);
                     free(ptr);
                     return -1;
                 }
@@ -279,7 +280,7 @@ int lsl()
    curr_dir=cwd2;
    if(NULL == curr_dir) 
    { 
-       printf("\n ERROR : Could not get the working directory\n"); 
+       printf(RED"\n ERROR : Could not get the working directory\n"RESET); 
        return -1; 
    } 
  
@@ -316,7 +317,7 @@ int lsl()
        ptr = malloc(num_files*8); 
        if(NULL == ptr) 
        { 
-           printf("\n Memory allocation failed\n"); 
+           printf(RED"\n Memory allocation failed\n"RESET); 
            return -1; 
        } 
        else 
@@ -330,7 +331,7 @@ int lsl()
    dp = opendir((const char*)curr_dir);    
    if(NULL == dp) 
    { 
-       printf("\n ERROR : Could not open the working directory\n"); 
+       printf(RED"\n ERROR : Could not open the working directory\n"RESET); 
        free(ptr); 
        return -1; 
    } 
@@ -355,7 +356,7 @@ int lsl()
        fd = open((char*)ptr[count], O_RDONLY, 0); 
        if(-1 == fd) 
        { 
-           printf("\n Opening file/Directory failed\n"); 
+           printf(RED"\n Opening file/Directory failed\n"RESET); 
            free(ptr); 
            return -1; 
        } 
@@ -364,7 +365,7 @@ int lsl()
       if(fstat(fd, &st)) 
       { 
           // If fstat() fails 
-          printf("\n Fstat() failed\n"); 
+          printf(RED"\n Fstat() failed\n"RESET); 
           close(fd); 
           free(ptr); 
           return -1; 
