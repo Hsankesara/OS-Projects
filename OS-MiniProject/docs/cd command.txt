@@ -1,0 +1,28 @@
+Implementing cd command using C
+
+The cd command, also known as chdir (change directory), is a command-line OS shell command used to change the current working directory in operating systems such as Unix, DOS, OS/2, AmigaOS (where if a bare path is given, cd is implied), Windows, and Linux.
+
+Tags implemented: cd <dir> , cd -e <dir> , cd ~ 
+
+
+cd <dir>
+	Change the current directory to DIR. The default DIR is the value of the HOME shell variable.
+	
+		chdir command is used to make cd_dir as the present directory.
+		Upon successful completion, 0 shall be returned. 
+		Otherwise, -1 shall be returned, the current working directory shall remain unchanged.
+
+
+cd -e <dir>
+	If the current working directory cannot be determined successfully, exit with a non-zero status.
+
+
+cd ~
+	Makes the root directory as current directory 
+	Current Directory: /home/<username>
+
+		Functions used: getuid() , getpwuid() ,  
+		The getuid() returns the real user ID of the calling process.
+		The getpwuid() function shall search the user database for an entry with a matching uid which is stored in *pw.
+		The fucntion cd is called with the argument pw->pw_dir. 
+
