@@ -17,8 +17,6 @@
 
 void cd(char cd_dir[]) {
 
-
-
 	// chdir command is used to make cd_dir as the present directory
 
 	 int n = chdir(cd_dir);

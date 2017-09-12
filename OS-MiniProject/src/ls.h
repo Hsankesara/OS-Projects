@@ -48,14 +48,13 @@ int ls(char *path)
 
 	// Variable to hold number of files inside the directory
 	int num_files = 0;
-  
 	dp = opendir((const char*)curr_dir);
 	// Start reading the directory contents
 	while(NULL != (dptr = readdir(dp)))
 	{
 		// Do not count the files begining with '.'
 		if(dptr->d_name[0] != '.')
-		num_files++;
+			num_files++;
 	}
   
 	// close the directory.

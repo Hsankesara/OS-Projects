@@ -11,6 +11,7 @@
 /*
 Unix Shell interface 
 */
+#define clear() printf("\033[H\033[J")
 #define BLUE	"\x1b[34m"
 #define GREEN	"\x1b[32m"
 #define CYAN	"\x1b[36m"
@@ -110,14 +111,20 @@ int main() {
 				break;
 			case 'r':
 				if(strcmp("rmdir",command_line.command) == 0){
-					if(command_line.tags == NULL){
-						//Create rmdir method for non empty file
+					if(command_line.tags == NULL && command_line.dir != NULL){
+						emptydirectory(command_line.dir);
 					}
-					else if(strcmp(command_line.tags, "-i") == 0){
+					else if(command_line.dir == NULL){
+						printf(RED"please insert directory\n"RESET);
+					}
+					else if(strcmp(command_line.tags, "-i") == 0 ){
 						Isinteractive(command_line.dir);
 					}
 					else if(strcmp(command_line.tags,"-r") == 0){
 						nonemptydirectoryrecursively(command_line.dir);
+					}
+					else{
+						printf(RED"Invalid Tag please use -i or -r\n"RESET);		
 					}
 				}
 				else{
@@ -145,6 +152,9 @@ int main() {
 						printf(RESET);
 					}
 				}
+				else if(strcmp(command_line.command,"cls") == 0){
+					clear();
+				}
 				else{
 					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
@@ -164,7 +174,7 @@ int main() {
 			case 'e':
 				break;
 			default :
-				printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
+				printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd, cls and exit commands\n"RESET);
 		}
 		// Free all the struct pointer
 		// And then declare them NULL

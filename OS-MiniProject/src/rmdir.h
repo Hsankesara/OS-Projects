@@ -5,8 +5,11 @@
 #include<errno.h>
 #include<sys/types.h>
 #include<dirent.h>
+#define RESET	"\x1b[0m"
+#define RED		"\x1b[31m"
+#define BLUE	"\x1b[34m"
 //prototype of the function needs to be defined above 
-int Isinteractive(char *dir);
+void Isinteractive(char *dir);
 void nonemptydirectoryrecursively(char *dir);
 int isfile(char *filename);
 int emptydirectory(char *dir);
@@ -19,33 +22,32 @@ int emptydirectory(char *dir);
 
 int emptydirectory(char *dir){
      //opens the directory
-		DIR *directory = opendir(dir);
-		struct dirent *d;
-		
-		int n=0;
+	DIR *directory = opendir(dir);
+	struct dirent *d;
+	int n=0;
+
+	//if directory is null
+    if(directory == NULL){
+    	printf(RED"directory does not exists\n"RESET);
+    	return 0;
+    }
     //checking whether the directory is empty or non empty
-	while(d=readdir(directory)!=NULL){
+	while(d = readdir(directory)!=NULL){
 		
 		if(++n>2)
 			break;
     }
-	//if directory is null
-	if(directory == NULL){
-			printf("directory does not exists\n");
-			exit(0);
-    }
     //if directory is empty
-    else if(n<=2){
-			rmdir(dir);
+    if(n<=2){
+		rmdir(dir);
     }
     //if directory is non empty,then gives error
     else{
-			printf("error deleting directory\n");
-            exit(0);
+		printf(RED"error deleting directory\n"RESET);
+        return -1;
 
 	}
-	return 0;
-        
+	return 0;        
 }
        
 // function for deleting a non empty directory 
@@ -58,8 +60,12 @@ void nonemptydirectoryrecursively(char *dir){
 	//using the scandir function
 	count = scandir(dir, &entry, NULL, alphasort); 
 	//changes the path of directory after every recursive call         
-	chdir(path);
-	// error handling required
+	int n = chdir(path);
+	if( n != 0 ){
+		//If directory doesn't exist
+		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
+		return;
+	}
 	for(int i=0;i<count;i++){
 	   //checks whether the given entry is a file or a directory
 		if(isfile(entry[i]->d_name) == 0){
@@ -98,11 +104,16 @@ int isfile(char *filename){
 }
 
  // function to check whether the given entry is a file or directory
-int Isinteractive(char *dir){
+void Isinteractive(char *dir){
    //creates a directory by using inbuilt opendir function
 	DIR *directory = opendir(dir);
 	struct dirent *d;
 	int n=0;
+	if(directory == NULL){
+    	printf(RED"directory does not exists\n"RESET);
+    	return;
+    }
+
     //checking if directory is empty or not by reading the directory using rmdir function
 	while(d=readdir(directory)!=NULL){
 	  //if n is greater than 2 ,leaves the loop
@@ -115,31 +126,22 @@ int Isinteractive(char *dir){
         rmdir(dir);
     
     }
-     //if directory does not exists
-    else if(directory == NULL){
-		printf("directory does not exists\n");
-	
-		exit(0);
-    }
        
-     else{
-			printf("are u sure u want to delete this non empty directory(y/n)?");
-			char ch;
-			scanf("%c",&ch);
-			
-			//if y , then call the function
-			if(ch == 'y'){
-				nonemptydirectoryrecursively(dir);
-            }
-            //else return
-			else if(ch == 'n'){
-     
-				return 0;
-            } // no other tags included
-			else{
-				printf("invalid character\n");
-            }
+    else{
+		printf(BLUE"are you sure you want to delete this non empty directory(y/n)?"RESET);
+		char ch;
+		scanf(" %c",&ch);
+		//if y , then call the function
+		if(ch == 'y' || ch == 'Y'){
+			nonemptydirectoryrecursively(dir);
+       }
+         //else return
+		else if(ch == 'n' || ch == 'N'){
+			return;
+        } // no other tags included
+		else{
+			printf(RED"invalid character\n"RESET);
+        }
     }
-	return 0;
-      
+	return;  
 }
