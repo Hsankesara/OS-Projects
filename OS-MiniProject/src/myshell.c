@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
-#include "cd.h"
+#include "cd.h"	
 #include "ls.h"
 #include "mkdir.h"
 #include "rmdir.h"
@@ -117,14 +117,11 @@ int main() {
 					else if(command_line.dir == NULL){
 						printf(RED"please insert directory\n"RESET);
 					}
-					else if(strcmp(command_line.tags, "-i") == 0 ){
-						Isinteractive(command_line.dir);
-					}
 					else if(strcmp(command_line.tags,"-r") == 0){
 						nonemptydirectoryrecursively(command_line.dir);
 					}
 					else{
-						printf(RED"Invalid Tag please use -i or -r\n"RESET);		
+						printf(RED"Invalid Tag please use -r\n"RESET);		
 					}
 				}
 				else{

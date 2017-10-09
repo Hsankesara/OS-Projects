@@ -29,7 +29,7 @@ int ls(char *path)
 	long *ptr = NULL;
 	
 	char cwd[1024];
-	getcwd(cwd, sizeof(cwd)); 
+	getcwd(cwd, sizeof(cwd));
 	if(NULL!=path)
 		curr_dir=path;
 	else

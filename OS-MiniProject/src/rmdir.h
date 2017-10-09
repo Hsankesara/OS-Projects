@@ -32,7 +32,7 @@ int emptydirectory(char *dir){
     	return 0;
     }
     //checking whether the directory is empty or non empty
-	while(d = readdir(directory)!=NULL){
+	while((d = readdir(directory))!=NULL){
 		
 		if(++n>2)
 			break;
@@ -52,7 +52,7 @@ int emptydirectory(char *dir){
        
 // function for deleting a non empty directory 
 void nonemptydirectoryrecursively(char *dir){
-	DIR *dirname;
+	DIR *dirname;	
 	struct dirent **entry;
 	char *path = dir;
 	int count = 0;
@@ -66,6 +66,7 @@ void nonemptydirectoryrecursively(char *dir){
 		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 		return;
 	}
+
 	for(int i=0;i<count;i++){
 	   //checks whether the given entry is a file or a directory
 		if(isfile(entry[i]->d_name) == 0){
@@ -77,7 +78,7 @@ void nonemptydirectoryrecursively(char *dir){
             remove(entry[i]->d_name);
        	}
 	}
-	//finally it makes the directory empty and deletes the directory the directory itself
+	//finally it makes the directory empty and deletes the directory itself
 
 	chdir("..");
 	rmdir(path);
@@ -101,47 +102,4 @@ int isfile(char *filename){
 	else {
       return -1;
   } 
-}
-
- // function to check whether the given entry is a file or directory
-void Isinteractive(char *dir){
-   //creates a directory by using inbuilt opendir function
-	DIR *directory = opendir(dir);
-	struct dirent *d;
-	int n=0;
-	if(directory == NULL){
-    	printf(RED"directory does not exists\n"RESET);
-    	return;
-    }
-
-    //checking if directory is empty or not by reading the directory using rmdir function
-	while(d=readdir(directory)!=NULL){
-	  //if n is greater than 2 ,leaves the loop
-		if(++n>2)
-			break;
-    }
-    //empty directory
-    if(n<=2){
-    	
-        rmdir(dir);
-    
-    }
-       
-    else{
-		printf(BLUE"are you sure you want to delete this non empty directory(y/n)?"RESET);
-		char ch;
-		scanf(" %c",&ch);
-		//if y , then call the function
-		if(ch == 'y' || ch == 'Y'){
-			nonemptydirectoryrecursively(dir);
-       }
-         //else return
-		else if(ch == 'n' || ch == 'N'){
-			return;
-        } // no other tags included
-		else{
-			printf(RED"invalid character\n"RESET);
-        }
-    }
-	return;  
 }
