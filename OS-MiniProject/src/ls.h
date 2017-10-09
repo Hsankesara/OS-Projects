@@ -27,19 +27,25 @@ int ls(char *path) 					//main ls function.Pass path to the ls fuction.
 	
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd)); 
-	if(NULL!=path)
-		curr_dir=path;				//get current directory and check path is given.If path is given change directory to path
-	else
+	if(NULL!=path){
+		if(path[0] == '/')
+			curr_dir=path;
+		else{
+			curr_dir = strcat(cwd,"/");
+			curr_dir = strcat(curr_dir, path);
+		}					//get current directory and check path is given.If path is given change directory to path
+	}
+	else{
 		curr_dir=cwd;
+	}
 	int n = chdir(curr_dir);
 	if(n != 0){
 		printf(RED"bash: cd: cn: No such file or directory\n"RESET);
 		return -1;
 	}
-
 	dp = opendir((const char*)curr_dir);			//open directory stream for reading files/directories
 	for(count = 0; NULL != (dptr = readdir(dp)); count++) 
-        { 
+        {
         if(dptr->d_name[0] != '.') 				//read files/directories that does not start with '.' 
         { 
             // Check if the file is executable 
@@ -78,6 +84,8 @@ int ls(char *path) 					//main ls function.Pass path to the ls fuction.
             } 
           }
 	}
+	int n2 = chdir(cwd);
+	printf("\n");
  return 0;
 } 
 
@@ -92,7 +100,12 @@ int lsa(char *path)					//ls -a function.Pass path to the ls fuction.
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd)); 
 	if(NULL!=path)
-		curr_dir=path;
+		{if(path[0] == '/')
+			curr_dir=path;
+		else{
+			curr_dir = strcat(cwd,"/");
+			curr_dir = strcat(curr_dir, path);
+		}}					//get current directory and check path is given.If path is given change directory to path}
 	else
 		curr_dir=cwd;				//get current directory and check path is given.If path is given change directory to path
 	int n = chdir(curr_dir);
@@ -141,6 +154,8 @@ int lsa(char *path)					//ls -a function.Pass path to the ls fuction.
             } 
           }
 	}
+	int n2=chdir(cwd);
+	printf("\n");
  return 0;
 } 
 
@@ -154,7 +169,12 @@ int lsl(char *path)
    char cwd2[1024];
    getcwd(cwd2, sizeof(cwd2));
 	if(path!=NULL)
-		curr_dir = path;
+		{if(path[0] == '/')
+			curr_dir=path;
+		else{
+			curr_dir = strcat(cwd2,"/");
+			curr_dir = strcat(curr_dir, path);
+		}}					
 	else
 		curr_dir = cwd2;	//get current directory and check path is given.If path is given change directory to path
 	int n = chdir(curr_dir);
@@ -364,10 +384,12 @@ int lsl(char *path)
 			printf("%s\n",(char*)ptr[count]); 
 		} 
 		close(fd); 
-	} 
+	}
+	printf("\n");
  	chdir(cwd2);
 	//Free the allocated memory 
 	free(ptr); 
+	int n2=chdir(cwd2);
 	return 0; 
 }
 
