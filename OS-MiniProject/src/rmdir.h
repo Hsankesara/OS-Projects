@@ -9,7 +9,6 @@
 #define RED		"\x1b[31m"
 #define BLUE	"\x1b[34m"
 //prototype of the function needs to be defined above 
-void Isinteractive(char *dir);
 void nonemptydirectoryrecursively(char *dir);
 int isfile(char *filename);
 int emptydirectory(char *dir);

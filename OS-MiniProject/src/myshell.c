@@ -31,34 +31,38 @@ struct base parse_string(char * str){
 	which contains parsed string.
 	It splits the string and divide into structure accordingly
 	*/
-	struct base line = {NULL, NULL, NULL};
-	char *output = strtok(str, " "); //splits the string
+	struct base line = {NULL, NULL, NULL};	//Initialize structure with NULL
+	char *output = strtok(str, " "); //splits the string and stores each part in buffer, the we can call buffer string by string
 	if (output ==NULL){
+		// If first output is NULL means user only presses enter button
 		return line;
 	}
-	line.command = (char *) malloc(sizeof(char) * strlen(output));
+	line.command = (char *) malloc(sizeof(char) * strlen(output));	// Assign some memory to line.command
 	strcpy(line.command, output);	//store command given by user
 	output = strtok (NULL, " ");		//just to jump from one substring to another
 	if(output == NULL){	// if next substring is null i.e no tags and no directory
 		//printf("%s\n",line.dir );
-		return line;
+		return line;	// if now output it NULL then it have no tag or directory
 	}
-	char *temp = malloc(sizeof(char) * strlen(output));
-	strcpy(temp, output);
+	char *temp = malloc(sizeof(char) * strlen(output));	// Assign some memory to tag
+	strcpy(temp, output);	// copy output to temp to decide whether it is tag or directory
 	// checking whether tag exist or not. 
 	if(temp[0] == '-') {
-		line.tags = (char *)malloc(sizeof(char)*strlen(output));
-		strcpy(line.tags, output);
-		output= strtok (NULL, " ");
+		// to check tag i have to check whether first char of output in hyphen or not
+		line.tags = (char *)malloc(sizeof(char)*strlen(output));	// Assign memory to line.tags
+		strcpy(line.tags, output);	// copy output to line.tags
+		output= strtok (NULL, " ");	// push next string from buffer
 	}
 	else{
-			line.tags = NULL;
+			line.tags = NULL;	// if tag does not exist then line.tags is NULL
 	}
 	// stores directory given by user
+	free(temp);	// freeing temp
+	temp = NULL;// assign temp to NULL	
 	if(output != NULL){
-		line.dir = (char *)malloc(sizeof(char)*strlen(output));
-		strcpy(line.dir, output);
-		output= strtok (NULL, " ");
+		line.dir = (char *)malloc(sizeof(char)*strlen(output)); // Assign some memory to line.dir
+		strcpy(line.dir, output);	// copy output to line.dir
+		output= strtok (NULL, " ");	//  push next string from buffer just to clear buffer
 	}
 	else{
 		line.dir = NULL;
@@ -67,18 +71,17 @@ struct base parse_string(char * str){
 }
 
 int main() {
-	char curr_dir[100];
-	char arg[1000];
+	char curr_dir[100];	// stores current directory
+	char arg[1000];		// stores user input
 	do{
 		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
 		printf(GREEN"bash:", curr_dir);
 		printf(BLUE"%s$ ", curr_dir);
 		printf(RESET);
-		int t;
 		scanf("\n"); 	// Just to ignore '\n' input
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
-		struct base command_line = {NULL, NULL, NULL};
-		command_line = parse_string(arg);
+		struct base command_line = {NULL, NULL, NULL}; // initialize structure with NULl
+		command_line = parse_string(arg);	// function call which returns appropriate structure
 		switch(command_line.command[0]){
 			// swich case to determine what was the command user typed.
 			// And do appropriate job using that command
