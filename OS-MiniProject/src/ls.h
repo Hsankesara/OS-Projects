@@ -19,14 +19,15 @@
 
 int ls(char *path) 					//main ls function.Pass path to the ls fuction.
 {
-	
 	char *curr_dir = NULL;				//declare curr_dir to store current directory
 	DIR *dp = NULL;					//declare directory stream pointer
 	struct dirent *dptr = NULL;			//declare directory pointer which will store names of files/directories
 	unsigned int count = 0;
 	
 	char cwd[1024];
-	getcwd(cwd, sizeof(cwd)); 
+	getcwd(cwd, sizeof(cwd));
+	char * initial_path = (char *) malloc(sizeof(cwd));
+	strcpy(initial_path, cwd);	// stores initial path for later uses
 	if(NULL!=path){
 		if(path[0] == '/')
 			curr_dir=path;
@@ -84,8 +85,10 @@ int ls(char *path) 					//main ls function.Pass path to the ls fuction.
             } 
           }
 	}
-	int n2 = chdir(cwd);
+	int n2 = chdir(initial_path);
 	printf("\n");
+	free(initial_path);
+	initial_path = NULL;
  return 0;
 } 
 
@@ -98,7 +101,9 @@ int lsa(char *path)					//ls -a function.Pass path to the ls fuction.
 	unsigned int count = 0;
 	
 	char cwd[1024];
-	getcwd(cwd, sizeof(cwd)); 
+	getcwd(cwd, sizeof(cwd));
+	char * initial_path = (char *) malloc(sizeof(cwd));
+	strcpy(initial_path, cwd);	// stores initial path for later uses 
 	if(NULL!=path)
 		{if(path[0] == '/')
 			curr_dir=path;
@@ -154,20 +159,24 @@ int lsa(char *path)					//ls -a function.Pass path to the ls fuction.
             } 
           }
 	}
-	int n2=chdir(cwd);
+	int n2=chdir(initial_path);
 	printf("\n");
+	free(initial_path);
+	initial_path = NULL;
  return 0;
 } 
 
 int lsl(char *path)
 { 
-   char *curr_dir = NULL; 
-   DIR *dp = NULL; 
-   struct dirent *dptr = NULL; 		//define current directory,DIRECTORY stream and directory pointer.
-   unsigned int count = 0; 
-   long *ptr = NULL; 
-   char cwd2[1024];
-   getcwd(cwd2, sizeof(cwd2));
+   	char *curr_dir = NULL; 
+   	DIR *dp = NULL; 
+   	struct dirent *dptr = NULL; 		//define current directory,DIRECTORY stream and directory pointer.
+   	unsigned int count = 0; 
+   	long *ptr = NULL; 
+   	char cwd2[1024];
+   	getcwd(cwd2, sizeof(cwd2));
+   	char * initial_path = (char *) malloc(sizeof(cwd2));
+	strcpy(initial_path, cwd2);	// stores initial path for later uses
 	if(path!=NULL)
 		{if(path[0] == '/')
 			curr_dir=path;
@@ -389,7 +398,9 @@ int lsl(char *path)
  	chdir(cwd2);
 	//Free the allocated memory 
 	free(ptr); 
-	int n2=chdir(cwd2);
+	int n2=chdir(initial_path);
+	free(initial_path);
+	initial_path = NULL;
 	return 0; 
 }
 

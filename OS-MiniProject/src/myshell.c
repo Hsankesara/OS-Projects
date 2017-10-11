@@ -169,6 +169,13 @@ int main() {
 					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
 			case 'e':
+				if (strcmp("exit", command_line.command) != 0){
+					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
+				}
+				else if(command_line.tags != NULL || command_line.dir !=  NULL){
+					printf(RED"Use valid command\n"RESET);
+				}
+				
 				break;
 			default :
 				printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd, cls and exit commands\n"RESET);
