@@ -33,6 +33,9 @@ struct base parse_string(char * str){
 	*/
 	struct base line = {NULL, NULL, NULL};
 	char *output = strtok(str, " "); //splits the string
+	if (output ==NULL){
+		return line;
+	}
 	line.command = (char *) malloc(sizeof(char) * strlen(output));
 	strcpy(line.command, output);	//store command given by user
 	output = strtok (NULL, " ");		//just to jump from one substring to another
@@ -42,7 +45,7 @@ struct base parse_string(char * str){
 	}
 	char *temp = malloc(sizeof(char) * strlen(output));
 	strcpy(temp, output);
-	// cheacking whether tag exist or not. 
+	// checking whether tag exist or not. 
 	if(temp[0] == '-') {
 		line.tags = (char *)malloc(sizeof(char)*strlen(output));
 		strcpy(line.tags, output);
@@ -71,6 +74,8 @@ int main() {
 		printf(GREEN"bash:", curr_dir);
 		printf(BLUE"%s$ ", curr_dir);
 		printf(RESET);
+		int t;
+		scanf("\n"); 	// Just to ignore '\n' input
 		scanf ("%[^\n]%*c", arg);	//for scanning the whole string
 		struct base command_line = {NULL, NULL, NULL};
 		command_line = parse_string(arg);
@@ -81,7 +86,7 @@ int main() {
 				if(strcmp("ls",command_line.command) == 0){
 					if(command_line.tags == NULL){
 						ls(command_line.dir);
-					}
+					}	
 					else if(strcmp(command_line.tags,"-a") == 0){
 						lsa(command_line.dir);
 					}
@@ -175,7 +180,7 @@ int main() {
 				else if(command_line.tags != NULL || command_line.dir !=  NULL){
 					printf(RED"Use valid command\n"RESET);
 				}
-				
+
 				break;
 			default :
 				printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd, cls and exit commands\n"RESET);
