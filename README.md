@@ -19,9 +19,11 @@ You will create an issue specifying your concerns and someone will reply and nec
 Implementation of some of the bash commands in c language and design an interactive shell.
 ## Project
 [Mini-Project](OS-MiniProject/docs/Mini_Project1.pdf)
+[Mini-project2](os-mini-project2/project.pdf)
 ### References
 * [Writing your own shell](https://brennan.io/2015/01/16/write-a-shell-in-c/)
 * [Pseudocodes](https://www.cs.cornell.edu/courses/cs414/2004su/homework/shell/shell.html)
 * [Step by Step Guide](http://hebabasiony.weebly.com/tutorials/writing-your-own-shell-step-by-step-step-1)
 * [Writing Shell in C Language](OS-MiniProject/docs/shell_prog.pdf)
 ### If you have any concern you can create an issue or contact me(@Hsankesara) on my mobile number:- 9427134631
+
