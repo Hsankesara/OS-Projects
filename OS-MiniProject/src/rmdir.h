@@ -13,11 +13,8 @@ void nonemptydirectoryrecursively(char *dir);
 int isfile(char *filename);
 int emptydirectory(char *dir);
 
-
-
 //argc-counts the no of lines till the input is taken
 //argv-stores the input in form of an array
-
 
 int emptydirectory(char *dir){
      //opens the directory

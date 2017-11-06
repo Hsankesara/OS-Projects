@@ -71,8 +71,8 @@ struct base parse_string(char * str){
 }
 
 int main() {
-	char curr_dir[100];	// stores current directory
-	char arg[1000];		// stores user input
+	char curr_dir[1000];	// stores current directory
+	char arg[10000];		// stores user input
 	do{
 		getcwd(curr_dir, sizeof(char) * 100);	//return current directory and saved it in curr_dirr
 		printf(GREEN"bash:", curr_dir);
@@ -176,6 +176,7 @@ int main() {
 				else{
 					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
 				}
+				break;
 			case 'e':
 				if (strcmp("exit", command_line.command) != 0){
 					printf(RED"Sorry command does not found\nplease try from cd, ls, mkdir, rmdir, pwd and exit commands\n"RESET);
