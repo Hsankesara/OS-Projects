@@ -1,4 +1,5 @@
 import sys
+import math
 
 
 class process(object):
@@ -29,12 +30,12 @@ def get_input_list(file_name):
 
 
 def get_avg(l):
-    return sum(l)/len(l)
+    return float(sum(l))/ len(l)
 
 
-def get_standard_dev(l):
+def get_std_dev(l):
     avg = get_avg(l)
-    std_dev = sum([(i - avg) ** 2 for i in l]) / (len(l) - 1)
+    std_dev = math.sqrt(sum([(i - avg) ** 2 for i in l]) / (len(l) - 1))
     return std_dev
 
 
@@ -91,7 +92,7 @@ def quick_sort(array, left, right):
     Time Complexity : O(nlog(n)).
     Space Complexity : O(n).
     :param array: Iterable of elements
-    :param left: used as left limit of quick sort
+    :param left: used as left limit of quick sort4
     :param right: right limit for quick sort
     :return: no returns, sorts array
     """
