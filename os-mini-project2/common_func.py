@@ -10,6 +10,9 @@ class process(object):
         self.total_exec_time = l[1]
         self.total_waiting_time = l[2] + l[3]
         self.priority = l[4]
+        self.total_remaining_time = self.total_exec_time
+        self.turn_around_time = None
+        self.waiting_time = None
 
 
 def get_input_list(file_name):
