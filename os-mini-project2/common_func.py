@@ -7,8 +7,9 @@ class process(object):
     def __init__(self, name, l):
         self.name = name
         self.arrival_time = l[0]
-        self.total_exec_time = l[1]
+        self.burst_time = l[1]
         self.total_waiting_time = l[2] + l[3]
+        self.total_exec_time = self.burst_time + self.total_waiting_time
         self.priority = l[4]
         self.total_remaining_time = self.total_exec_time
         self.turn_around_time = None
@@ -33,7 +34,7 @@ def get_input_list(file_name):
 
 
 def get_avg(l):
-    return float(sum(l))/ len(l)
+    return float(sum(l)) / len(l)
 
 
 def get_std_dev(l):

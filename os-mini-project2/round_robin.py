@@ -30,9 +30,11 @@ def run_robin(inp_list, q, wanna_print):
     waiting_time = [i.waiting_time for i in inp_list]
     avg_waiting_around_time = common_func.get_avg(waiting_time)
     if wanna_print is True:
+        print 'process Name\tTurn Around Time\tWaiting Time'
         for i in inp_list:
-            print i.name, i.turn_around_time, i.waiting_time
-        print avg_waiting_around_time, avg_turn_around_time
+            print i.name,'\t\t',i.turn_around_time,'\t\t\t', i.waiting_time
+        print 'Average Waiting Time', avg_waiting_around_time
+        print 'Average Turn Around Time', avg_turn_around_time
     
     restore_data(inp_list)
     return avg_waiting_around_time, avg_turn_around_time
@@ -43,11 +45,11 @@ def plot_rr(input_list):
     turn_around_time = [run_robin(list(input_list), i, False)[1] for i in q]
     plt.figure(figsize=(8, 6), dpi=80)
     plt.subplot(211)
-    plt.plot(q,waiting_time,'ro', linewidth=1.0, linestyle="-"  )
+    plt.plot(q,waiting_time,'ro'  )
     plt.ylabel('Avg Waiting time')
     plt.xlabel('quantum')
     plt.subplot(212)
-    plt.plot(q, turn_around_time, 'bo', linewidth=1.0, linestyle="-")
+    plt.plot(q, turn_around_time, 'bo')
     plt.ylabel('Avg Turn Around time')
     plt.xlabel('quantum')
     plt.show()
