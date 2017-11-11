@@ -45,7 +45,7 @@ def get_std_dev(l):
     return std_dev
 
 
-def sort_arrival_time(inp):
+def sort_priority(inp):
     quick_sort(inp, 0, len(inp) - 1)
 
 
@@ -59,12 +59,12 @@ def median(a, i, j, k):
     :return: return median of values at indices i, j and k.
     """
     ai, aj, ak = a[i], a[j], a[k]
-    med_val = ai.arrival_time + aj.arrival_time + ak.arrival_time - \
-        max(ai.arrival_time, aj.arrival_time, ak.arrival_time) - \
-        min(ai.arrival_time, aj.arrival_time, ak.arrival_time)
-    if ai.arrival_time == med_val:
+    med_val = ai.priority + aj.priority + ak.priority - \
+        max(ai.priority, aj.priority, ak.priority) - \
+        min(ai.priority, aj.priority, ak.priority)
+    if ai.priority == med_val:
         return i
-    elif aj.arrival_time == med_val:
+    elif aj.priority == med_val:
         return j
     return k
 
@@ -82,9 +82,9 @@ def partition(array, l, r):
     i = l - 1
     pivot_index = median(array, l, r, (l+r) // 2)
     array[pivot_index], array[r] = array[r], array[pivot_index]
-    pivot = array[r].arrival_time
+    pivot = array[r].priority
     for j in range(l, r):
-        if array[j].arrival_time <= pivot:
+        if array[j].priority <= pivot:
             i += 1
             array[i], array[j] = array[j], array[i]
     i += 1
