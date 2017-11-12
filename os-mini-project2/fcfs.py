@@ -3,19 +3,11 @@ import math
 import common_func
 
 
-def run_fcfs(input_list1, write, count):
+def run_fcfs(input_list1, write):
 
     sum = 0
     flag = 0
     n = len(input_list1)
-
- 
-    if count is 1:
-        for i in range(0, n):
-            input_list1[i].total_exec_time = input_list1[
-                i].total_exec_time+input_list1[i].elapsed_time
-    elif count >1 or count < 0:
-        print'invalid input'
 
     for j in range(0, n):
         flag = flag+input_list1[j].total_exec_time

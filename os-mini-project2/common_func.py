@@ -4,26 +4,30 @@ import math
 
 class process(object):
 
-    def __init__(self, name, l, previous_arrival_time):
+    def __init__(self, name, l, previous_arrival_time, count):
         self.name = name
         self.arrival_time = l[0] + previous_arrival_time
-        self.total_exec_time = l[1]
+        self.burst_time = l[1]
         self.elapsed_time = l[2] + l[3]
         self.priority = l[4]
+        if count == 0:
+            self.total_exec_time = self.burst_time
+        else:
+            self.total_exec_time = self.burst_time + self.elapsed_time
         self.total_remaining_time = self.total_exec_time
         self.turn_around_time = None
         self.completion_time = None
         self.waiting_time = None
 
 
-def get_input_list(file_name):
+def get_input_list(file_name, count):
     try:
         abs_time = 0
         file = open(file_name, 'r')
         input_list = []
         for line in file:
             list_line = line.split(' ')
-            new_process = process(list_line[0], map(float, list_line[1:]), abs_time)
+            new_process = process(list_line[0], map(float, list_line[1:]), abs_time, count)
             abs_time = new_process.arrival_time 
             input_list.append(new_process)
     except IOError as e:
