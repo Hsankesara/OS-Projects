@@ -60,7 +60,7 @@ def plot_rr(input_list):
     waiting_with_elapsed_time = list(waiting_with_elapsed_time)
     turn_around_with_elapsed_time = list(turn_around_with_elapsed_time)
     plt.figure(figsize=(8, 6), dpi=80)
-        plt.subplot(221)
+    plt.subplot(221)
     plt.plot(q, waiting_time, 'ro')
     plt.ylabel('Avg Waiting time')
     plt.xlabel('quantum')
