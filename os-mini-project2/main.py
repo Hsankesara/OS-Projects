@@ -1,6 +1,8 @@
 import sys
 import common_func
 import round_robin as rr
+import fcfs as fcfs
+
 
 
 def main():
@@ -12,6 +14,7 @@ def main():
             rr.run_robin(input_list, 3, True)
             rr.plot_rr(input_list)
         elif algo_option == 'fcfs':
+            fcfs.run_fcfs(input_list,True,0)
             print 'fcfs'
         elif algo_option == 'sjf':
             # Use SJF
