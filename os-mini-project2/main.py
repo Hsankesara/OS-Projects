@@ -7,15 +7,15 @@ import fcfs as fcfs
 
 def main():
     try:
-        file_name = sys.argv[2]
+        file_name = sys.argv[3]
         input_list = common_func.get_input_list(file_name)
-        algo_option = sys.argv[1]
+        algo_option = sys.argv[2]
+        count = sys.argv[1]
         if algo_option == 'rr':
-            rr.run_robin(input_list, 3, True)
-            rr.plot_rr(input_list)
+            rr.run_robin(input_list, 3, True, count)
+            rr.plot_rr(input_list, count)
         elif algo_option == 'fcfs':
-            fcfs.run_fcfs(input_list,True,0)
-            print 'fcfs'
+            fcfs.run_fcfs(input_list,True,count)
         elif algo_option == 'sjf':
             # Use SJF
             print 'sjf'
@@ -23,7 +23,7 @@ def main():
             sys.exit('Wrong input\nyou can use rr , fcfs and sjf. Please try again')
     except IndexError as e:
         sys.exit(
-            'Please follow this format: python main.py <Name of scheduling algo> <File Name>')
+            'Please follow this format: python main.py <count> <Name of scheduling algo> <File Name>')
 
 
 if __name__ == '__main__':

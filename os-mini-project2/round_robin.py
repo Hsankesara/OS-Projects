@@ -2,7 +2,7 @@ import common_func
 import matplotlib.pyplot as plt
 
 
-def run_robin(inp_list, q, wanna_print):
+def run_robin(inp_list, q, wanna_print, count):
     ready_queue = []
     curr_time = 0
     i = -1
@@ -51,7 +51,7 @@ def run_robin(inp_list, q, wanna_print):
     return avg_waiting_around_time, avg_turn_around_time, avg_waiting_with_elapsed_time, avg_turn_around_with_elapsed_time
 
 
-def plot_rr(input_list):
+def plot_rr(input_list, count):
     q = [i for i in xrange(1, 11)]
     waiting_time, turn_around_time, waiting_with_elapsed_time, turn_around_with_elapsed_time = zip(
         *[run_robin(list(input_list), i, False) for i in q])
