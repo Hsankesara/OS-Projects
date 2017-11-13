@@ -19,9 +19,12 @@ def run_fcfs(input_list1, write):
         input_list1[j].waiting_time = input_list1[
             j].turn_around_time-input_list1[j].total_exec_time
 
-    avg_waiting_time = common_func.get_avg([i.waiting_time for i in input_list1])
-    avg_turn_around_time = common_func.get_avg([i.turn_around_time for i in input_list1])
-    avg_completion_time = common_func.get_avg([i.completion_time for i in input_list1])
+    avg_waiting_time = common_func.get_avg(
+        [i.waiting_time for i in input_list1])
+    avg_turn_around_time = common_func.get_avg(
+        [i.turn_around_time for i in input_list1])
+    avg_completion_time = common_func.get_avg(
+        [i.completion_time for i in input_list1])
     if write is True:
         print 'process Name\tTurn Around Time\tWaiting Time'
         for i in range(0, n):
