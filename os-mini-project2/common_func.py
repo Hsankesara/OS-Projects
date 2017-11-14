@@ -3,28 +3,41 @@ import math
 
 
 class process(object):
-
-    def __init__(self, name, l, previous_arrival_time):
+    """
+    Process class stores component of each process i.e name arrival time etc
+    """
+    def __init__(self, name, l, previous_arrival_time, count):
+        # storing all attributes
         self.name = name
         self.arrival_time = l[0] + previous_arrival_time
-        self.total_exec_time = l[1]
+        self.burst_time = l[1]
         self.elapsed_time = l[2] + l[3]
         self.priority = l[4]
+        if count == 0:
+            self.total_exec_time = self.burst_time # Simple case
+        else:
+            self.total_exec_time = self.burst_time + self.elapsed_time # complex case
         self.total_remaining_time = self.total_exec_time
         self.turn_around_time = None
         self.completion_time = None
         self.waiting_time = None
 
 
-def get_input_list(file_name):
+def get_input_list(file_name, count):
+    """
+    returns list of objects
+    :param filename: name of input file
+    :param count:0 means simple case and 1 means complex case
+    """
     try:
         abs_time = 0
         file = open(file_name, 'r')
         input_list = []
         for line in file:
             list_line = line.split(' ')
-            new_process = process(list_line[0], map(float, list_line[1:]), abs_time)
-            abs_time = new_process.arrival_time 
+            new_process = process(list_line[0], map(
+                float, list_line[1:]), abs_time, count)
+            abs_time = new_process.arrival_time
             input_list.append(new_process)
     except IOError as e:
         sys.exit(e)
@@ -45,7 +58,7 @@ def get_std_dev(l):
     return std_dev
 
 
-def sort_arrival_time(inp):
+def sort_priority(inp):
     quick_sort(inp, 0, len(inp) - 1)
 
 
@@ -59,12 +72,12 @@ def median(a, i, j, k):
     :return: return median of values at indices i, j and k.
     """
     ai, aj, ak = a[i], a[j], a[k]
-    med_val = ai.arrival_time + aj.arrival_time + ak.arrival_time - \
-        max(ai.arrival_time, aj.arrival_time, ak.arrival_time) - \
-        min(ai.arrival_time, aj.arrival_time, ak.arrival_time)
-    if ai.arrival_time == med_val:
+    med_val = ai.priority + aj.priority + ak.priority - \
+        max(ai.priority, aj.priority, ak.priority) - \
+        min(ai.priority, aj.priority, ak.priority)
+    if ai.priority == med_val:
         return i
-    elif aj.arrival_time == med_val:
+    elif aj.priority == med_val:
         return j
     return k
 
@@ -82,9 +95,9 @@ def partition(array, l, r):
     i = l - 1
     pivot_index = median(array, l, r, (l+r) // 2)
     array[pivot_index], array[r] = array[r], array[pivot_index]
-    pivot = array[r].arrival_time
+    pivot = array[r].priority
     for j in range(l, r):
-        if array[j].arrival_time <= pivot:
+        if array[j].priority <= pivot:
             i += 1
             array[i], array[j] = array[j], array[i]
     i += 1
