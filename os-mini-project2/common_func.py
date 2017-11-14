@@ -3,17 +3,20 @@ import math
 
 
 class process(object):
-
+    """
+    Process class stores component of each process i.e name arrival time etc
+    """
     def __init__(self, name, l, previous_arrival_time, count):
+        # storing all attributes
         self.name = name
         self.arrival_time = l[0] + previous_arrival_time
         self.burst_time = l[1]
         self.elapsed_time = l[2] + l[3]
         self.priority = l[4]
         if count == 0:
-            self.total_exec_time = self.burst_time
+            self.total_exec_time = self.burst_time # Simple case
         else:
-            self.total_exec_time = self.burst_time + self.elapsed_time
+            self.total_exec_time = self.burst_time + self.elapsed_time # complex case
         self.total_remaining_time = self.total_exec_time
         self.turn_around_time = None
         self.completion_time = None
@@ -21,6 +24,11 @@ class process(object):
 
 
 def get_input_list(file_name, count):
+    """
+    returns list of objects
+    :param filename: name of input file
+    :param count:0 means simple case and 1 means complex case
+    """
     try:
         abs_time = 0
         file = open(file_name, 'r')
