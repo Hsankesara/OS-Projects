@@ -3,19 +3,19 @@ import matplotlib.pyplot as plt
 
 
 def run_robin(inp_list, q, wanna_print):
-"""
-Here implemented round robin algo which is scheduling algorithm
-It is one of the most commonly used technique in CPU scheduling as a core.
-It is preemptive as processes are assigned CPU only for a fixed slice of time at most.
-Algo:-  we are gonna iterate through list of objects and push all the objects in ready queue
-        whose arrival time is less then current time. Then we pop out a process and run it for
-        time q(quantum) units. if total remaining time of that process is less than q units than we completed that process else
-        we deduct q units of time from its total remaining time and pushed it back to ready queue.We repeat the above
-        process untill all the processes are executed.
-:param inp_list: List of process objects
-:param  q : quantum of given process
-:param  q : do you wanna print?
-"""
+    """
+    Here implemented round robin algo which is scheduling algorithm
+    It is one of the most commonly used technique in CPU scheduling as a core.
+    It is preemptive as processes are assigned CPU only for a fixed slice of time at most.
+    Algo:-  we are gonna iterate through list of objects and push all the objects in ready queue
+            whose arrival time is less then current time. Then we pop out a process and run it for
+            time q(quantum) units. if total remaining time of that process is less than q units than we completed that process else
+            we deduct q units of time from its total remaining time and pushed it back to ready queue.We repeat the above
+            process untill all the processes are executed.
+    :param inp_list: List of process objects
+    :param  q : quantum of given process
+    :param  q : do you wanna print?
+    """
     ready_queue = []    # ready queue which store process
     curr_time = 0       # current time
     i = -1

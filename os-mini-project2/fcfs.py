@@ -2,84 +2,29 @@ import sys
 import math
 import common_func
 
-
-<<<<<<< HEAD
-def run_fcfs(input_list1,write):
-      
-	    sum =0
-	    flag=0
-	   
-		n=len(input_list1)
-
-		for i in range(0,n):
-	       input_list1[i].total_exec_time=input_list[i].total_exec_time+input_list[i].elapsed_time
-	    
-		for j in range(0,n):	
-			input_list1[j].arrival_time
-			
-		for k in range(0,n):
-			input_list1[k].name=k
-	
-			
-		for j in range(0,n):
-			flag=flag+input_list[j].total_exec_time
-			input_list[j].completion_time=flag
-			
-		for j in range(0,n):
-            input_list1[j].turn_around_time=input_list1[j].completion_time-input_list1[j].arrival_time
-            input_list1[j].waiting_time=input_list[j].turn_around_time-input_list1[j].total_exec_time
-            
-        
-        average_waiting_time=common_func.get_avg(waiting_time)
-        average_turnaround_time=common_func.get_avg(turn_around_time)
-        average_completion_time=common_func.get_avg(completion_time)
-        
-        if write is True:
-			print 'process Name\tTurn Around Time\tWaiting Time'
-			for i in range(o,n):
-				print input_list1[i].name,'\t\t',input_list[i].turn_around_time,'\t\t',input_list[i].waiting_time
-			
-			
-		print 'The Average Waiting Time is:', avg_waiting_time
-        print 'Average Turn Around Time is:', avg_turn_around_time
-        print 'Average completion Time is:', avg_completion_time
-       
-    	
-			
-	   return average_waitng_time,average_turnaround_time,average_completion_time
-			
-			
-			
-			
-        
-        
-        
-        
-        
-    
-			
-				    
-	     
-	     
-	   
-	       
-	    
-=======
-def run_fcfs(input_list1, write):
+#In fcfs ,it will be based on first come first serve .the process which comes first will be executed first without preemption 
+#and then another process will be executed . so first we have calculated the completion time of each process by summing the previous total execution time and respectively waiting time and turn around time are calculated.
+#function is defined
+def run_fcfs(input_list1):
 
     sum = 0
     flag = 0
+    #lenght is taken
     n = len(input_list1)
-
+  #loop is run to calculate the completion time by incrementing the flag by previous total execution time
     for j in range(0, n):
         flag = flag+input_list1[j].total_exec_time
         input_list1[j].completion_time = flag
-
+#here waiting time and turn around time are calculated by using the below formulae:
+#turn_around_time=completion_time-arrival_time
+#waiting_time=turn_around_time-total_exec_time
     for j in range(0, n):
         input_list1[j].turn_around_time = input_list1[
             j].completion_time-input_list1[j].arrival_time
         input_list1[j].waiting_time = input_list1[
             j].turn_around_time-input_list1[j].total_exec_time
+#here we have find the average of each of time calculated by calling the get_avg from the common_func module and then passing
+#the values fo each of the following time in the for loop
 
     avg_waiting_time = common_func.get_avg(
         [i.waiting_time for i in input_list1])
@@ -87,13 +32,13 @@ def run_fcfs(input_list1, write):
         [i.turn_around_time for i in input_list1])
     avg_completion_time = common_func.get_avg(
         [i.completion_time for i in input_list1])
-    if write is True:
-        print 'process Name\tTurn Around Time\tWaiting Time'
-        for i in range(0, n):
-            print input_list1[i].name, '\t\t', input_list1[i].turn_around_time, '\t\t\t', input_list1[i].waiting_time
+ #here we print the whole output table i.e. process name ,then turn around time, followed by waiting time respectively
+    print 'process Name\tTurn Around Time\tWaiting Time'
+    for i in range(0, n):
+        print input_list1[i].name, '\t\t', input_list1[i].turn_around_time, '\t\t\t', input_list1[i].waiting_time
 
     print 'The Average Waiting Time is:', avg_waiting_time
     print 'Average Turn Around Time is:', avg_turn_around_time
     print 'Average completion Time is:', avg_completion_time
+ #returns the given parameter
     return avg_waiting_time, avg_turn_around_time, avg_completion_time
->>>>>>> 6017d5ae60400fd26dd93fb341a020a29b222ada
