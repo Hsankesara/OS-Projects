@@ -25,7 +25,7 @@ def findwaitingtime(input_list, n):
                 minm = input_list[j].total_remaining_time								
                 shortest = j														#find shortest time 
                 check = True
-        # if no process is found then check is False
+        # if no process is found means no process is currently executing then check is False
         if minm == float('inf'):
             check = False
         if check is False:														

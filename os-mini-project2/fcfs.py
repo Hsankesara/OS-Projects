@@ -16,7 +16,8 @@ def run_fcfs(input_list1):
     for j in range(0, n):
         # if arrival time of next process is greater than flag(current time) than we increase flag 
         if flag < input_list1[j].arrival_time:
-            flag += input_list1[j].arrival_time - flag
+            # shifts code to next arrival time
+            flag = input_list1[j].arrival_time
         flag = flag + input_list1[j].total_exec_time
         input_list1[j].completion_time = flag
 #here waiting time and turn around time are calculated by using the below formulae:
