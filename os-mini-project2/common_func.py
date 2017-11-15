@@ -4,7 +4,7 @@ import math
 
 class process(object):
     """
-    Process class stores component of each process i.e name arrival time etc
+    Process class stores component of each process i.e name,arrival time etc
     """
     def __init__(self, name, l, previous_arrival_time, count):
         # storing all attributes
@@ -35,8 +35,7 @@ def get_input_list(file_name, count):
         input_list = []
         for line in file:
             list_line = line.split(' ')
-            new_process = process(list_line[0], map(
-                float, list_line[1:]), abs_time, count)
+            new_process = process(list_line[0], map(float, list_line[1:]), abs_time, count)
             abs_time = new_process.arrival_time
             input_list.append(new_process)
     except IOError as e:

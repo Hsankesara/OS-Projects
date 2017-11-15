@@ -11,30 +11,30 @@ def run_sjf(input_list):
 	
 
 def findwaitingtime(input_list, n):			
-    complete = 0
-    t = 0
-    minm = 1000000000
-    shortest = 0
-    finish_time = 0
-    check = False
+    complete = 0    # total number of processes completed
+    t = 0   # current time
+    minm = 1000000000   # minimun remaining time from input list
+    shortest = 0    # index of object  having minimum remaining time
+    finish_time = 0 # completion time
+    check = False   # false if no process currently being executed
 
     while complete != n:                           #while list is not iterated move along list
+        minm = 1000000000 # initialize minm
         for j in xrange(0, n):
             if input_list[j].arrival_time <= t and input_list[j].total_remaining_time < minm and input_list[j].total_remaining_time > 0: #check arrival time< total time and time remaining is < max value
                 minm = input_list[j].total_remaining_time								
                 shortest = j														#find shortest time 
                 check = True
+        # if no process is found then check is 0
+        if minm == 1000000000:
+            check = False
         if check is False:														
             t = t+1
             continue
-        input_list[shortest].total_remaining_time = input_list[								
-            shortest].total_remaining_time - 1												#decrease time for shortest process by 1
+        input_list[shortest].total_remaining_time = input_list[shortest].total_remaining_time - 1												#decrease time for shortest process by 1
         if input_list[shortest].total_remaining_time > 0 and input_list[shortest].total_remaining_time < 1:
             t += input_list[shortest].total_remaining_time										#if remaining time is is between 0 to 1,add to total time
             input_list[shortest].total_remaining_time = 0										#then make it 0
-        minm = input_list[shortest].total_remaining_time
-        if minm == 0:
-            minm = 1000000000
         if input_list[shortest].total_remaining_time == 0:
             complete += 1														#if shortest process is executed increase complete processes by 1
             finish_time = t + 1

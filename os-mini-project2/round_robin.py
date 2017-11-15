@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def run_robin(inp_list, q, wanna_print):
     """
-    Here implemented round robin algo which is scheduling algorithm
+    Here we've implemented round robin algo which is scheduling algorithm
     It is one of the most commonly used technique in CPU scheduling as a core.
     It is preemptive as processes are assigned CPU only for a fixed slice of time at most.
     Algo:-  we are gonna iterate through list of objects and push all the objects in ready queue
