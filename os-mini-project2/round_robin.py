@@ -54,6 +54,8 @@ def run_robin(inp_list, q, wanna_print):
             print i.name, '\t\t', i.turn_around_time, '\t\t\t', i.waiting_time
         print 'Average Waiting Time', avg_waiting_around_time
         print 'Average Turn Around Time', avg_turn_around_time
+        print 'Standard Deviation of waiting time', common_func.get_std_dev(waiting_time)
+        print 'Standard Deviation of turn around time', common_func.get_std_dev(turn_around_time)
     restore_data(inp_list) # restore all data as we also have to plot graph
     return avg_waiting_around_time, avg_turn_around_time
 

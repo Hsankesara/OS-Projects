@@ -48,8 +48,12 @@ def findwaitingtime(input_list, n):
 def findavgtime(input_list, n):	
     findwaitingtime(input_list, n)                                									#call to find avg waiting time
     print "Processes \t\t" + "Burst time\t\t" +"Waiting Time\t\t" + "Turn around time "
+    waiting_time = [i.waiting_time for i in input_list]
+    turn_around_time = [i.turn_around_time for i in input_list]
     for i in range(n):
         print input_list[i].name, "\t\t\t", input_list[i].total_exec_time, "\t\t\t", input_list[i].waiting_time, "\t\t\t", input_list[i].turn_around_time		#iterate through list and print attributes
-    print "Average waiting time = ", common_func.get_avg([i.waiting_time for i in input_list])										#add waiting time of processes and average them
-    print "Average turn around time = ", common_func.get_avg([i.turn_around_time for i in input_list])									#add turn around time of processes and average them
+    print "Average waiting time = ", common_func.get_avg(turn_around_time)										#add waiting time of processes and average them
+    print "Average turn around time = ", common_func.get_avg(turn_around_time)									#add turn around time of processes and average them
     print "Average Completion time = ", common_func.get_avg([i.completion_time for i in input_list])									#add completion time of processes and average them
+    print 'Standard Deviation of waiting time', common_func.get_std_dev(waiting_time)
+    print 'Standard Deviation Time of Turn Around time ', common_func.get_std_dev(turn_around_time)

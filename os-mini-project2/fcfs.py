@@ -28,7 +28,8 @@ def run_fcfs(input_list1):
         input_list1[j].waiting_time = input_list1[j].turn_around_time - input_list1[j].total_exec_time
 #here we have find the average of each of time calculated by calling the get_avg from the common_func module and then passing
 #the values fo each of the following time in the for loop
-
+    waiting_time = [i.waiting_time for i in input_list1]
+    turn_around_time = [i.turn_around_time for i in input_list1]
     avg_waiting_time = common_func.get_avg([i.waiting_time for i in input_list1])
     avg_turn_around_time = common_func.get_avg([i.turn_around_time for i in input_list1])
     avg_completion_time = common_func.get_avg([i.completion_time for i in input_list1])
@@ -40,3 +41,5 @@ def run_fcfs(input_list1):
     print 'Average Waiting Time is:', avg_waiting_time
     print 'Average Turn Around Time is:', avg_turn_around_time
     print 'Average completion Time is:', avg_completion_time
+    print 'Standard Deviation of waiting time', common_func.get_std_dev(waiting_time)
+    print 'Turn Around Time of waiting time', common_func.get_std_dev(turn_around_time)
