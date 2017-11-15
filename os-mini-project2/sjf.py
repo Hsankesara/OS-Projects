@@ -13,20 +13,20 @@ def run_sjf(input_list):
 def findwaitingtime(input_list, n):			
     complete = 0    # total number of processes completed
     t = 0   # current time
-    minm = 1000000000   # minimun remaining time from input list
     shortest = 0    # index of object  having minimum remaining time
     finish_time = 0 # completion time
     check = False   # false if no process currently being executed
 
     while complete != n:                           #while list is not iterated move along list
-        minm = 1000000000 # initialize minm
+        # minimun remaining time from input list
+        minm = float('inf') # initialize minm with infinite
         for j in xrange(0, n):
             if input_list[j].arrival_time <= t and input_list[j].total_remaining_time < minm and input_list[j].total_remaining_time > 0: #check arrival time< total time and time remaining is < max value
                 minm = input_list[j].total_remaining_time								
                 shortest = j														#find shortest time 
                 check = True
-        # if no process is found then check is 0
-        if minm == 1000000000:
+        # if no process is found then check is False
+        if minm == float('inf'):
             check = False
         if check is False:														
             t = t+1
