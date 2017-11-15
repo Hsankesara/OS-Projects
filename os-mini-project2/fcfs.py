@@ -42,4 +42,4 @@ def run_fcfs(input_list1):
     print 'Average Turn Around Time is:', avg_turn_around_time
     print 'Average completion Time is:', avg_completion_time
     print 'Standard Deviation of waiting time', common_func.get_std_dev(waiting_time)
-    print 'Turn Around Time of waiting time', common_func.get_std_dev(turn_around_time)
+    print 'Standard Deviation of turn around time', common_func.get_std_dev(turn_around_time)
