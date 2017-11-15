@@ -29,7 +29,7 @@ def findwaitingtime(input_list, n):
             continue
         input_list[shortest].total_remaining_time = input_list[								
             shortest].total_remaining_time - 1												#decrease time for shortest process by 1
-        if input_list[shortest].total_remaining_time > 0 and input_list[shortest].total_remaining_time <= 1:
+        if input_list[shortest].total_remaining_time > 0 and input_list[shortest].total_remaining_time < 1:
             t += input_list[shortest].total_remaining_time										#if remaining time is is between 0 to 1,add to total time
             input_list[shortest].total_remaining_time = 0										#then make it 0
         minm = input_list[shortest].total_remaining_time

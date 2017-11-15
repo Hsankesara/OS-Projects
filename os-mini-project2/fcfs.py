@@ -8,7 +8,8 @@ import common_func
 def run_fcfs(input_list1):
 
     sum = 0
-    flag = 0
+    # initialize flag with arrival time of first process
+    flag = input_list1[0].arrival_time
     #lenght is taken
     n = len(input_list1)
   #loop is run to calculate the completion time by incrementing the flag by previous total execution time
@@ -19,10 +20,8 @@ def run_fcfs(input_list1):
 #turn_around_time=completion_time-arrival_time
 #waiting_time=turn_around_time-total_exec_time
     for j in range(0, n):
-        input_list1[j].turn_around_time = input_list1[
-            j].completion_time-input_list1[j].arrival_time
-        input_list1[j].waiting_time = input_list1[
-            j].turn_around_time-input_list1[j].total_exec_time
+        input_list1[j].turn_around_time = input_list1[j].completion_time - input_list1[j].arrival_time
+        input_list1[j].waiting_time = input_list1[j].turn_around_time-input_list1[j].total_exec_time
 #here we have find the average of each of time calculated by calling the get_avg from the common_func module and then passing
 #the values fo each of the following time in the for loop
 

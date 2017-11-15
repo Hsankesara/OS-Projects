@@ -9,7 +9,7 @@ import sjf
 #arises
 def main():
   #now sys.argv represents the array of arguments taken in the input and similarly we will take count as 2nd argument and file name
-  #fourth argumnet
+  #fourth argument
     try:
         file_name = sys.argv[3]
         count = int(sys.argv[1])

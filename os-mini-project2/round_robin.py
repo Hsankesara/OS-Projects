@@ -22,19 +22,22 @@ def run_robin(inp_list, q, wanna_print):
     n = len(inp_list)
     all_arrived = False
     while all_arrived is False or ready_queue != []:    # while all the processes are not arrived or ready queue is non-empty 
-        while i <= n-2 and inp_list[i + 1].arrival_time < curr_time + q:    # while i  < n-2 as we are using i + 1 and arrival time of (i+1)th process is less than current time
+        while i <= n-2 and inp_list[i + 1].arrival_time <= curr_time:    # while i  < n-2 as we are using i + 1 and arrival time of (i+1)th process is less than current time
             ready_queue.insert(0, inp_list[i + 1])  # adding process to queue
             i += 1
             if i == n - 1:
                 all_arrived = True  # if i is equal to n-1 then alll process are arrived
-
+        if ready_queue == [] and all_arrived is False:
+            # if queue is empty and all process are not arrived then increase current time by one and continue
+            curr_time += 1
+            continue
         process = ready_queue.pop() # popping a process
         if process.total_remaining_time <= q:   # if remaining time of the proces is less than q then execute the whole process  
             curr_time += process.total_remaining_time
             process.total_remaining_time = 0
             process.completion_time = curr_time # calculating completion time
             process.turn_around_time = process.completion_time - process.arrival_time # calculating turn around time : TAT = Commpletion time - arrival time
-            process.waiting_time = process.turn_around_time - process.arrival_time  # calculating total  waiting time : waiting time = turn around time - arrival time
+            process.waiting_time = process.turn_around_time - process.total_exec_time # calculating total  waiting time : waiting time =turn around time - burst time
         else:   # else deduct q from total remaining time of the process
             curr_time += q
             process.total_remaining_time -= q
