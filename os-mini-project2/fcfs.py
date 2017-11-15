@@ -30,8 +30,8 @@ def run_fcfs(input_list1):
 #the values fo each of the following time in the for loop
     waiting_time = [i.waiting_time for i in input_list1]
     turn_around_time = [i.turn_around_time for i in input_list1]
-    avg_waiting_time = common_func.get_avg([i.waiting_time for i in input_list1])
-    avg_turn_around_time = common_func.get_avg([i.turn_around_time for i in input_list1])
+    avg_waiting_time = common_func.get_avg(waiting_time)
+    avg_turn_around_time = common_func.get_avg(turn_around_time)
     avg_completion_time = common_func.get_avg([i.completion_time for i in input_list1])
  #here we print the whole output table i.e. process name ,then turn around time, followed by waiting time respectively
     print 'process Name\tTurn Around Time\tWaiting Time'
