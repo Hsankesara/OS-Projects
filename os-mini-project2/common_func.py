@@ -38,6 +38,7 @@ def get_input_list(file_name, count):
             new_process = process(list_line[0], map(float, list_line[1:]), abs_time, count)
             abs_time = new_process.arrival_time
             input_list.append(new_process)
+        file.close()
     except IOError as e:
         sys.exit(e)
     except ValueError as e:
