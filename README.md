@@ -25,5 +25,4 @@ Implementation of some of the bash commands in c language and design an interact
 * [Pseudocodes](https://www.cs.cornell.edu/courses/cs414/2004su/homework/shell/shell.html)
 * [Step by Step Guide](http://hebabasiony.weebly.com/tutorials/writing-your-own-shell-step-by-step-step-1)
 * [Writing Shell in C Language](OS-MiniProject/docs/shell_prog.pdf)
-### If you have any concern you can create an issue or contact me(@Hsankesara) on my mobile number:- 9427134631
 
